@@ -21,7 +21,7 @@ docker run -p 3000:3000 transform
 # Test the route
 
 ```bash
-curl -F "file=@example.csv" http://localhost:3000/api/v1/jobs
+curl -X POST -F "file=@example.csv" http://localhost:3000/api/v1/jobs
 ```
 
 ```

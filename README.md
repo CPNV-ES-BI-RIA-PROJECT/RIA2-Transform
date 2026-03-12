@@ -2,117 +2,37 @@
 
 A REST API allowing interaction with different cloud drive providers.
 
-Currently supported provider:
+Currently, this is only a fake api returning always the same url (test purpose).
 
-- Google Drive
+## Build and run locally
 
-Future providers:
+# Build Docker image
 
-- OneDrive
-- Dropbox
-
-The API exposes a unified interface to perform common operations on cloud drives.
-
-## Features
-
-- Create folders
-- Upload files (CSV supported)
-- Generate public share links
-
-The provider implementation is abstracted to allow switching providers without changing the API.
-
----
-
-# Architecture
-
-The project follows a layered architecture inspired by enterprise backend frameworks.
-
-```
-Layer responsibilities:
-
-| Layer | Responsibility |
-|------|---------------|
-| routes | HTTP routing and request validation |
-| controllers | API endpoints |
-| services | Business logic |
-| providers | Drive provider implementations |
-| infrastructure | SDK integration |
-| container | Dependency injection |
-
-Dependency injection is handled using **Awilix**.
+```bash
+docker build -t transform .
 ```
 
----
+# Run container
 
-# API Endpoints
-
-## Create folder
-
-* [POST] /folders
-
-```
-    //Body
-    {
-        "name" : "Invoices"
-    }
+```bash
+docker run -p 3000:3000 transform
 ```
 
-## Upload file
+# Test the route
 
-* [POST] /folders/{folderId}/files
-
-```
-    Content-Type : multipart/from-data
+```bash
+curl -F "file=@example.csv" http://localhost:3000/api/v1/jobs
 ```
 
-## Share file
-
-* [POST] /files/{fileId}/share
-
 ```
-    Response
-    {
-    "url": "https://drive.google.com/file/d/FILE_ID/view
-    "
-    }
+{
+"url": "https://always.the.same.url"
+}
 ```
 
-# Configuration
-
-Environment variables are defined in `.env`.
-
-Example:
+Publish to Docker hub
 
 ```
-    PORT=3000
-    DRIVE_PROVIDER=google
-    GOOGLE_APPLICATION_CREDENTIALS=./credentials.json
-    LINK_TTL=3600
+docker login
 ```
 
-# Installation
-
-* Clone repository
-* Install dependencies
-
-```
-    pnpm install
-```
-
-* Start development server
-
-```
-    pnpm dev
-```
-
-# Testing
-
-* Run tests:
-
-```
-pnpm test
-```
-
-# Licence
-
-Educational project [LICENCE](./LICENCE)

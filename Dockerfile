@@ -11,7 +11,7 @@ LABEL org.opencontainers.image.version="1.0.1"
 # Set working directory
 WORKDIR /usr/src/app
 
-# Copy package files and install dependencies with pnpm
+# Copy package files and install dependencies
 COPY package.json pnpm-lock.yaml* tsconfig.json ./
 RUN npm install -g pnpm
 RUN pnpm install
@@ -19,7 +19,7 @@ RUN pnpm install
 # Copy source code
 COPY src ./src
 
-# Compile TypeScript
+# Compile TypeScript to /dist
 RUN pnpm exec tsc
 
 # Stage 2: Production
@@ -32,7 +32,10 @@ COPY --from=builder /usr/src/app/package.json ./
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/dist ./dist
 
-# Expose the server port
+# Set NODE_ENV
+ENV NODE_ENV=production
+
+# Expose server port
 EXPOSE 3000
 
 # Start the server

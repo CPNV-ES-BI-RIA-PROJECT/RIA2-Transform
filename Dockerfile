@@ -11,7 +11,7 @@ LABEL org.opencontainers.image.version="1.0.1"
 # Set working directory
 WORKDIR /usr/src/app
 
-# Copy package files and install dependencies
+# Install dependencies
 COPY package.json pnpm-lock.yaml* tsconfig.json ./
 RUN npm install -g pnpm
 RUN pnpm install
@@ -27,7 +27,7 @@ FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
-# Copy only what we need for production
+# Copy only production artifacts
 COPY --from=builder /usr/src/app/package.json ./
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/dist ./dist
@@ -39,4 +39,4 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 # Start the server
-CMD ["node", "dist/server.js"]
+CMD ["node", "--loader", "ts-node/esm", "dist/server.js"]

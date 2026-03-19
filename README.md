@@ -9,7 +9,11 @@ It does not actually push files to Google Drive. It’s intended as a base for a
 * Accepts .ics files via POST /api/v1/jobs
 
 ```curl
-curl -F "file=@./tests/data/single-event.ics" http://localhost:3000/api/v1/jobs
+curl -X POST http://localhost:3000/api/v1/jobs \
+   -H "Content-Type: application/json" \
+   -d '{
+        "url": "https://bi1-nicolas.s3.eu-west-1.amazonaws.com/multiple-events.ics"
+       }`
 ```
 
 ##Handles:
@@ -30,11 +34,12 @@ Fully written in TypeScript, using node-ical for parsing
 
 ### Classic deployment
 
-| Command          | Description                                 |
-| ---------------- | ------------------------------------------- |
-| `pnpm run dev`   | Run server in development mode (ts-node)    |
-| `pnpm run build` | Compile TypeScript to `dist/` folder        |
-| `pnpm start`     | Run production server from compiled `dist/` |
+| Command          | Description                                            |
+| ---------------- | ------------------------------------------------------ |
+| `pnpm run dev`   | Run server in development mode using `tsx` (ESM-ready) |
+| `pnpm run build` | Compile TypeScript to `dist/` folder using `tsc`       |
+| `pnpm start`     | Run production server from compiled `dist/`            |
+
 
 # Build Docker image
 

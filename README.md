@@ -32,24 +32,29 @@ Fully written in TypeScript, using node-ical for parsing
 
 ## Build and run locally
 
+### Create .env
+
+```
+    cp .env.test .env
+```
+
 ### Classic deployment
 
-| Command          | Description                                            |
-| ---------------- | ------------------------------------------------------ |
-| `pnpm run dev`   | Run server in development mode using `tsx` (ESM-ready) |
-| `pnpm run build` | Compile TypeScript to `dist/` folder using `tsc`       |
-| `pnpm start`     | Run production server from compiled `dist/`            |
-
+| Command          | Description                                                   |
+| ---------------- | ------------------------------------------------------------- |
+| `pnpm run dev`   | Run server in development mode using `tsx` with `.env` support |
+| `pnpm run build` | Compile TypeScript to `dist/` folder using `tsc`              |
+| `pnpm start`     | Run production server from compiled `dist/`, reads `.env` for PORT |
 
 # Build Docker image
 
-| Step                               | Command                                        | Description                                                             |
-| ---------------------------------- |------------------------------------------------| ----------------------------------------------------------------------- |
-| **Build the Docker image**         | `docker build -t transform:latest .`           | Compiles the TypeScript code and builds a production-ready Docker image |
-| **Run the container**              | `docker run -p 3000:3000 transform:latest`     | Starts the microservice, mapping port 3000 from container → host        |
-| **Optional: Run in detached mode** | `docker run -d -p 3000:3000 --name transform transform:latest` | Runs the container in background (detached) with a name                 |
-| **Stop the container**             | `docker stop transform`                        | Stops the running container by name                                     |
-| **Remove the container**           | `docker rm transform`                          | Deletes the stopped container                                           |
+| Step                         | Command                                        | Description                                                                              |
+|------------------------------|------------------------------------------------|------------------------------------------------------------------------------------------|
+| **Build the Docker image**   | `docker build -t transform:latest .`           | Compiles the TypeScript code and builds a production-ready Docker image                  |
+| **Run the container**        | `docker run -p 3000:3000 transform:latest`<br/>To override .env ```docker run -e PORT=5000 -p 5000:5000 your-image```     | Starts the microservice, mapping port 3000 from container → host |
+| **Optional: Run in detached mode** | `docker run -d -p 3000:3000 --name transform transform:latest` | Runs the container in background (detached) with a name                                  |
+| **Stop the container**       | `docker stop transform`                        | Stops the running container by name                                                      |
+| **Remove the container**     | `docker rm transform`                          | Deletes the stopped container                                                            |
 
 
 Publish to Docker hub

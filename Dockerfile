@@ -31,12 +31,13 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/package.json ./
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/dist ./dist
+COPY .env ./
 
 # Set NODE_ENV
 ENV NODE_ENV=production
 
 # Expose server port
-EXPOSE 3000
+EXPOSE ${PORT:-3000}
 
 # Start the server
-CMD ["node", "--loader", "ts-node/esm", "dist/server.js"]
+CMD ["node", "-r", "dotenv/config", "dist/server.js"]

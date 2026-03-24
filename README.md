@@ -6,7 +6,8 @@ It does not actually push files to Google Drive. It’s intended as a base for a
 
 # Fake features
 
-* Accepts .ics files via POST /api/v1/jobs
+* Accepts .ics files via POST `/api/v1/jobs`
+* Accepts MQTT jobs and publishes MQTT results
 
 ```curl
 curl -X POST http://localhost:3000/api/v1/jobs \
@@ -16,7 +17,7 @@ curl -X POST http://localhost:3000/api/v1/jobs \
        }`
 ```
 
-##Handles:
+## Handles:
 
 | Scenario                  | HTTP Status | Response / Description                     |
 | ------------------------- |-------------| ------------------------------------------ |
@@ -29,6 +30,62 @@ curl -X POST http://localhost:3000/api/v1/jobs \
 | Unhandled error           | 500         | Internal server error                      |
 
 Fully written in TypeScript, using node-ical for parsing
+
+## MQTT transport
+
+The service now supports MQTT in addition to HTTP.
+
+* Subscribe topic: `etl/{namespace}/transform/cmd/start`
+* Publish topics: `etl/{namespace}/transform/event/running`, `etl/{namespace}/transform/event/completed`, `etl/{namespace}/transform/event/failed`
+
+Request payload (JSON):
+
+```json
+{
+  "schemaVersion": "1.0",
+  "job_id": "job-123",
+  "input": {
+    "uri": "https://example.org/calendar.ics"
+  }
+}
+```
+
+Response payload (success):
+
+```json
+{
+  "schemaVersion": "1.0",
+  "job_id": "job-123",
+  "output": {
+    "uri": "https://bi1-nicolas.s3.eu-west-1.amazonaws.com/multiple-events.json"
+  }
+}
+```
+
+Response payload (error):
+
+```json
+{
+  "schemaVersion": "1.0",
+  "job_id": "job-123",
+  "error": {
+    "code": "INVALID_ICS",
+    "message": "Invalid ICS format"
+  }
+}
+```
+
+Environment variables:
+
+* `MQTT_BROKER_URL` (required to enable MQTT)
+* `MQTT_NAMESPACE` (default: `stack1`)
+* `MQTT_SERVICE_NAME` (default: `transform`)
+* `MQTT_SCHEMA_VERSION` (default: `1.0`)
+* `MQTT_CLIENT_ID`
+* `MQTT_USERNAME`
+* `MQTT_PASSWORD`
+* `MQTT_SUBSCRIBE_QOS` (default: `0`)
+* `MQTT_PUBLISH_QOS` (default: `0`)
 
 ## Build and run locally
 

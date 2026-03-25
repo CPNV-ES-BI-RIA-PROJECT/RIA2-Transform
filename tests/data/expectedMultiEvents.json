@@ -1,0 +1,122 @@
+[
+  {
+    "uid": "john-20250303-1@mycompany.com",
+    "dtstamp": "2025-02-01 08:00:00",
+    "start": { "value": "2025-03-03 09:00:00", "timezone": "Europe/Bern" },
+    "end": { "value": "2025-03-03 15:00:00", "timezone": "Europe/Bern" },
+    "summary": "Work session 1",
+    "description": "[acme.ch] Development session",
+    "categories": ["BUSINESS"],
+    "organizer": "contact@acme.ch",
+    "attendees": ["john.doe@mycompany.com"],
+    "location": "https://maps.google.com/?q=46.2044,6.1432"
+  },
+  {
+    "uid": "john-20250303-2@mycompany.com",
+    "dtstamp": "2025-02-01 08:00:00",
+    "start": { "value": "2025-03-04 09:00:00", "timezone": "Europe/Bern" },
+    "end": { "value": "2025-03-04 15:00:00", "timezone": "Europe/Bern" },
+    "summary": "Work session 2",
+    "description": "[acme.ch] Development session",
+    "categories": ["BUSINESS"],
+    "organizer": "contact@acme.ch",
+    "attendees": ["john.doe@mycompany.com"],
+    "location": "https://maps.google.com/?q=46.2044,6.1432"
+  },
+  {
+    "uid": "john-20250303-3@mycompany.com",
+    "dtstamp": "2025-02-01 08:00:00",
+    "start": { "value": "2025-03-05 09:00:00", "timezone": "Europe/Bern" },
+    "end": { "value": "2025-03-05 15:00:00", "timezone": "Europe/Bern" },
+    "summary": "Work session 3",
+    "description": "[acme.ch] Development session",
+    "categories": ["BUSINESS"],
+    "organizer": "contact@acme.ch",
+    "attendees": ["john.doe@mycompany.com"],
+    "location": "https://maps.google.com/?q=46.2044,6.1432"
+  },
+  {
+    "uid": "john-20250303-4@mycompany.com",
+    "dtstamp": "2025-02-01 08:00:00",
+    "start": { "value": "2025-03-06 09:00:00", "timezone": "Europe/Bern" },
+    "end": { "value": "2025-03-06 15:00:00", "timezone": "Europe/Bern" },
+    "summary": "Work session 4",
+    "description": "[acme.ch] Development session",
+    "categories": ["BUSINESS"],
+    "organizer": "contact@acme.ch",
+    "attendees": ["john.doe@mycompany.com"],
+    "location": "https://maps.google.com/?q=46.2044,6.1432"
+  },
+  {
+    "uid": "john-20250303-5@mycompany.com",
+    "dtstamp": "2025-02-01 08:00:00",
+    "start": { "value": "2025-03-07 09:00:00", "timezone": "Europe/Bern" },
+    "end": { "value": "2025-03-07 15:00:00", "timezone": "Europe/Bern" },
+    "summary": "Work session 5",
+    "description": "[acme.ch] Development session",
+    "categories": ["BUSINESS"],
+    "organizer": "contact@acme.ch",
+    "attendees": ["john.doe@mycompany.com"],
+    "location": "https://maps.google.com/?q=46.2044,6.1432"
+  },
+  {
+    "uid": "john-20250303-6@mycompany.com",
+    "dtstamp": "2025-02-01 08:00:00",
+    "start": { "value": "2025-03-08 09:00:00", "timezone": "Europe/Bern" },
+    "end": { "value": "2025-03-08 15:00:00", "timezone": "Europe/Bern" },
+    "summary": "Work session 6",
+    "description": "[acme.ch] Development session",
+    "categories": ["BUSINESS"],
+    "organizer": "contact@acme.ch",
+    "attendees": ["john.doe@mycompany.com"],
+    "location": "https://maps.google.com/?q=46.2044,6.1432"
+  },
+  {
+    "uid": "john-20250303-7@mycompany.com",
+    "dtstamp": "2025-02-01 08:00:00",
+    "start": { "value": "2025-03-09 09:00:00", "timezone": "Europe/Bern" },
+    "end": { "value": "2025-03-09 15:00:00", "timezone": "Europe/Bern" },
+    "summary": "Work session 7",
+    "description": "[acme.ch] Development session",
+    "categories": ["BUSINESS"],
+    "organizer": "contact@acme.ch",
+    "attendees": ["john.doe@mycompany.com"],
+    "location": "https://maps.google.com/?q=46.2044,6.1432"
+  },
+  {
+    "uid": "john-20250303-8@mycompany.com",
+    "dtstamp": "2025-02-01 08:00:00",
+    "start": { "value": "2025-03-10 09:00:00", "timezone": "Europe/Bern" },
+    "end": { "value": "2025-03-10 15:00:00", "timezone": "Europe/Bern" },
+    "summary": "Work session 8",
+    "description": "[acme.ch] Development session",
+    "categories": ["BUSINESS"],
+    "organizer": "contact@acme.ch",
+    "attendees": ["john.doe@mycompany.com"],
+    "location": "https://maps.google.com/?q=46.2044,6.1432"
+  },
+  {
+    "uid": "john-20250303-9@mycompany.com",
+    "dtstamp": "2025-02-01 08:00:00",
+    "start": { "value": "2025-03-11 09:00:00", "timezone": "Europe/Bern" },
+    "end": { "value": "2025-03-11 15:00:00", "timezone": "Europe/Bern" },
+    "summary": "Work session 9",
+    "description": "[acme.ch] Development session",
+    "categories": ["BUSINESS"],
+    "organizer": "contact@acme.ch",
+    "attendees": ["john.doe@mycompany.com"],
+    "location": "https://maps.google.com/?q=46.2044,6.1432"
+  },
+  {
+    "uid": "john-20250303-10@mycompany.com",
+    "dtstamp": "2025-02-01 08:00:00",
+    "start": { "value": "2025-03-12 09:00:00", "timezone": "Europe/Bern" },
+    "end": { "value": "2025-03-12 15:00:00", "timezone": "Europe/Bern" },
+    "summary": "Work session 10",
+    "description": "[acme.ch] Development session",
+    "categories": ["BUSINESS"],
+    "organizer": "contact@acme.ch",
+    "attendees": ["john.doe@mycompany.com"],
+    "location": "https://maps.google.com/?q=46.2044,6.1432"
+  }
+]

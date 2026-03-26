@@ -1,118 +1,62 @@
-# Drive API
+# RIA2-Transform (Fake)
 
-A REST API allowing interaction with different cloud drive providers.
+This is a fake Node.js + TypeScript microservice that simulates converting ICS calendar files to JSON and returning a public link.
 
-Currently supported provider:
+It does not actually push files to Google Drive. It’s intended as a base for a real service.
 
-- Google Drive
+# Fake features
 
-Future providers:
+* Accepts .ics files via POST /api/v1/jobs
 
-- OneDrive
-- Dropbox
-
-The API exposes a unified interface to perform common operations on cloud drives.
-
-## Features
-
-- Create folders
-- Upload files (CSV supported)
-- Generate public share links
-
-The provider implementation is abstracted to allow switching providers without changing the API.
-
----
-
-# Architecture
-
-The project follows a layered architecture inspired by enterprise backend frameworks.
-
-```
-Layer responsibilities:
-
-| Layer | Responsibility |
-|------|---------------|
-| routes | HTTP routing and request validation |
-| controllers | API endpoints |
-| services | Business logic |
-| providers | Drive provider implementations |
-| infrastructure | SDK integration |
-| container | Dependency injection |
-
-Dependency injection is handled using **Awilix**.
+```curl
+curl -X POST http://localhost:3000/api/v1/jobs \
+   -H "Content-Type: application/json" \
+   -d '{
+        "url": "https://bi1-nicolas.s3.eu-west-1.amazonaws.com/multiple-events.ics"
+       }`
 ```
 
----
+##Handles:
 
-# API Endpoints
+| Scenario                  | HTTP Status | Response / Description                     |
+| ------------------------- |-------------| ------------------------------------------ |
+| Single ICS event          | 201         | Link to JSON representing the single event |
+| Multiple ICS events       | 201         | Link to JSON representing multiple events  |
+| Empty ICS file            | 422         | No events found in ICS                     |
+| Invalid ICS file          | 422         | Invalid ICS format                         |
+| Wrong file type (non-ICS) | 415         | Unsupported media type                     |
+| No file in request        | 400         | No file uploaded                           |
+| Unhandled error           | 500         | Internal server error                      |
 
-## Create folder
+Fully written in TypeScript, using node-ical for parsing
 
-* [POST] /folders
+## Build and run locally
 
-```
-    //Body
-    {
-        "name" : "Invoices"
-    }
-```
-
-## Upload file
-
-* [POST] /folders/{folderId}/files
-
-```
-    Content-Type : multipart/from-data
-```
-
-## Share file
-
-* [POST] /files/{fileId}/share
+### Create .env
 
 ```
-    Response
-    {
-    "url": "https://drive.google.com/file/d/FILE_ID/view
-    "
-    }
+    cp .env.test .env
 ```
 
-# Configuration
+### Classic deployment
 
-Environment variables are defined in `.env`.
+| Command          | Description                                                   |
+| ---------------- | ------------------------------------------------------------- |
+| `pnpm run dev`   | Run server in development mode using `tsx` with `.env` support |
+| `pnpm run build` | Compile TypeScript to `dist/` folder using `tsc`              |
+| `pnpm start`     | Run production server from compiled `dist/`, reads `.env` for PORT |
 
-Example:
+# Build Docker image
 
-```
-    PORT=3000
-    DRIVE_PROVIDER=google
-    GOOGLE_APPLICATION_CREDENTIALS=./credentials.json
-    LINK_TTL=3600
-```
+| Step                         | Command                                        | Description                                                                              |
+|------------------------------|------------------------------------------------|------------------------------------------------------------------------------------------|
+| **Build the Docker image**   | `docker build -t transform:latest .`           | Compiles the TypeScript code and builds a production-ready Docker image                  |
+| **Run the container**        | `docker run -p 3000:3000 transform:latest`<br/>To override .env ```docker run -e PORT=5000 -p 5000:5000 your-image```     | Starts the microservice, mapping port 3000 from container → host |
+| **Optional: Run in detached mode** | `docker run -d -p 3000:3000 --name transform transform:latest` | Runs the container in background (detached) with a name                                  |
+| **Stop the container**       | `docker stop transform`                        | Stops the running container by name                                                      |
+| **Remove the container**     | `docker rm transform`                          | Deletes the stopped container                                                            |
 
-# Installation
 
-* Clone repository
-* Install dependencies
+Publish to Docker hub
 
-```
-    pnpm install
-```
-
-* Start development server
-
-```
-    pnpm dev
-```
-
-# Testing
-
-* Run tests:
-
-```
-pnpm test
-```
-
-# Licence
-
-Educational project [LICENCE](./LICENCE)
+[See the organization wiki's page](https://github.com/CPNV-ES-BI-RIA-PROJECT/.github/wiki/Publish-images-on-Containers-Registry-Organization).

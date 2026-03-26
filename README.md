@@ -1,62 +1,100 @@
-# RIA2-Transform (Fake)
+# ICS Transform Microservice
 
-This is a fake Node.js + TypeScript microservice that simulates converting ICS calendar files to JSON and returning a public link.
+## Description
 
-It does not actually push files to Google Drive. It’s intended as a base for a real service.
+ICS Transform Microservice is a TypeScript-based service that converts ICS calendar files into JSON events. It is designed as a modular, scalable microservice, following clean architecture principles, and ready to integrate with other components like Google Drive, cache, or message brokers.
 
-# Fake features
+## Getting Started
 
-* Accepts .ics files via POST /api/v1/jobs
+### Prerequisites
 
-```curl
-curl -X POST http://localhost:3000/api/v1/jobs \
-   -H "Content-Type: application/json" \
-   -d '{
-        "url": "https://bi1-nicolas.s3.eu-west-1.amazonaws.com/multiple-events.ics"
-       }`
+List all dependencies and their version needed by the project as :
+
+* DataBase Engine (MySql, PostgreSQL, MSSQL,...)
+* IDE used (PhpStorm, Visual Studio Code, IntelliJ,...)
+* Package manager (Nuget, Composer, npm, ...)
+* OS supported (W2k22, Debian12,...)
+* Virtualization (Docker, .Net, .JDK, .JRE)
+
+### Configuration
+
+How to set up the database?
+How do you set the sensitive data?
+
+## Usage
+
+# Install dependencies
+```bash
+pnpm install
+```
+# Run in dev mode (hot reload)
+```bash
+pnpm dev
 ```
 
-##Handles:
-
-| Scenario                  | HTTP Status | Response / Description                     |
-| ------------------------- |-------------| ------------------------------------------ |
-| Single ICS event          | 201         | Link to JSON representing the single event |
-| Multiple ICS events       | 201         | Link to JSON representing multiple events  |
-| Empty ICS file            | 422         | No events found in ICS                     |
-| Invalid ICS file          | 422         | Invalid ICS format                         |
-| Wrong file type (non-ICS) | 415         | Unsupported media type                     |
-| No file in request        | 400         | No file uploaded                           |
-| Unhandled error           | 500         | Internal server error                      |
-
-Fully written in TypeScript, using node-ical for parsing
-
-## Build and run locally
-
-### Create .env
-
-```
-    cp .env.test .env
+# Build
+```bash
+pnpm build
 ```
 
-### Classic deployment
+# Start server
+```bash
+pnpm start
+```
 
-| Command          | Description                                                   |
-| ---------------- | ------------------------------------------------------------- |
-| `pnpm run dev`   | Run server in development mode using `tsx` with `.env` support |
-| `pnpm run build` | Compile TypeScript to `dist/` folder using `tsc`              |
-| `pnpm start`     | Run production server from compiled `dist/`, reads `.env` for PORT |
+# Run tests
+```bash
+pnpm test
+```
 
-# Build Docker image
+# Call the API
 
-| Step                         | Command                                        | Description                                                                              |
-|------------------------------|------------------------------------------------|------------------------------------------------------------------------------------------|
-| **Build the Docker image**   | `docker build -t transform:latest .`           | Compiles the TypeScript code and builds a production-ready Docker image                  |
-| **Run the container**        | `docker run -p 3000:3000 transform:latest`<br/>To override .env ```docker run -e PORT=5000 -p 5000:5000 your-image```     | Starts the microservice, mapping port 3000 from container → host |
-| **Optional: Run in detached mode** | `docker run -d -p 3000:3000 --name transform transform:latest` | Runs the container in background (detached) with a name                                  |
-| **Stop the container**       | `docker stop transform`                        | Stops the running container by name                                                      |
-| **Remove the container**     | `docker rm transform`                          | Deletes the stopped container                                                            |
+```bash
+POST /api/v1/convert
+Body: { "url": "https://example.com/calendar.ics" }
+Response: { "events": [ ... ] }
+```
 
+## Deployment
 
-Publish to Docker hub
+### On dev environment
 
-[See the organization wiki's page](https://github.com/CPNV-ES-BI-RIA-PROJECT/.github/wiki/Publish-images-on-Containers-Registry-Organization).
+How to get dependencies and build?
+How to run the tests?
+
+### On stage environment
+
+How to deploy the application outside the dev environment.
+
+## Directory structure
+
+* Tip: try the tree bash command
+
+```shell
+src/
+├── application/        # ICS conversion business logic (multi-event)
+├── domain/             # ICS event types, parser logic
+├── infrastructure/     # stubs for Google Drive, cache, broker
+├── main/               # server setup, Swagger, routers
+├── presentation/       # controllers (Swagger exposed)
+├── config/             # environment
+├── shared/             # utilities/helpers
+tests/                  # Jest unit tests
+```
+
+## Collaborate
+
+* Take time to read some readme and find the way you would like to help other developers collaborate with you.
+
+* They need to know:
+    * [How to propose a new feature]()
+    * [How to commit](https://www.conventionalcommits.org/en/v1.0.0/)
+    * [How to use your workflow](https://nvie.com/posts/a-successful-git-branching-model/)
+
+## License
+
+[LICENSE](LICENSE.md)
+
+## Contact
+
+* [LinkedIn](https://www.linkedin.com/in/nicolas-glassey-agile/)

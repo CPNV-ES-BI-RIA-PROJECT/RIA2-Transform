@@ -1,76 +1,35 @@
-// src/application/icsParser.ts
+import { IcsEvent } from './types';
+import { formatDate } from "../share/utils/dateUtils";
 
-import { formatDate } from '../share/utils/dateUtils';
+export { IcsEvent };
 
-export interface IcsEvent {
-    uid: string;
-    dtstamp: string;
-    start: { value: string; timezone?: string } | null;
-    end: { value: string; timezone?: string } | null;
-    summary?: string;
-    description?: string;
-    categories: string[];
-    organizer?: string;
-    attendees: string[];
-    location?: string;
-    extra?: Record<string, any>;
-}
-
-/**
- * Parse an ICS string and return an array of events
- * @param icsString - raw ICS content
- */
 export function parseIcs(icsString: string): IcsEvent[] {
-    const events: IcsEvent[] = [];
-    let current: Partial<IcsEvent> & Record<string, any> | null = null;
-
-    // split lines and clean
     const lines = icsString
-        .split(/\r?\n/)
+        .split('\n')
         .map(l => l.trim())
-        .filter(l => l);
+        .filter(l => l && !l.startsWith('BEGIN'));
 
-    for (const line of lines) {
-        if (line.startsWith('BEGIN:VEVENT')) {
-            current = { attendees: [], categories: [] };
-            continue;
-        }
+    const events: IcsEvent[] = [];
+    let current: Partial<IcsEvent> & {
+        categories?: string[];
+        attendees?: string[];
+    } = {};
 
-        if (line.startsWith('END:VEVENT')) {
-            if (current) {
-                // cast to full IcsEvent (required fields)
-                events.push({
-                    uid: current.uid || '',
-                    dtstamp: current.dtstamp || '',
-                    start: current.start || null,
-                    end: current.end || null,
-                    summary: current.summary,
-                    description: current.description,
-                    categories: current.categories || [],
-                    organizer: current.organizer,
-                    attendees: current.attendees || [],
-                    location: current.location,
-                    extra: current.extra,
-                });
-            }
-            current = null;
-            continue;
-        }
+    lines.forEach(line => {
+        const colonIndex = line.indexOf(':');
+        if (colonIndex === -1) return;
 
-        if (!current) continue;
+        const keyPart = line.slice(0, colonIndex);
+        const value = line.slice(colonIndex + 1);
 
-        // key parsing
-        const [keyPart, ...rest] = line.split(':');
-        const value = rest.join(':'); // in case value contains ':'
         const [key, ...params] = keyPart.split(';');
-
         const paramObj: Record<string, string> = {};
         params.forEach(p => {
             const [k, v] = p.split('=');
             if (k && v) paramObj[k] = v;
         });
 
-        switch (key.toUpperCase()) {
+        switch (key) {
             case 'UID':
                 current.uid = value;
                 break;
@@ -78,10 +37,16 @@ export function parseIcs(icsString: string): IcsEvent[] {
                 current.dtstamp = formatDate(value);
                 break;
             case 'DTSTART':
-                current.start = { value : formatDate(value), timezone: paramObj.TZID };
+                current.start = {
+                    value: formatDate(value),  // ✅ use the line value directly
+                    timezone: paramObj.TZID || null
+                };
                 break;
             case 'DTEND':
-                current.end = { value : formatDate(value), timezone: paramObj.TZID };
+                current.end = {
+                    value: formatDate(value),  // ✅ use the line value directly
+                    timezone: paramObj.TZID || null
+                };
                 break;
             case 'SUMMARY':
                 current.summary = value;
@@ -90,23 +55,42 @@ export function parseIcs(icsString: string): IcsEvent[] {
                 current.description = value;
                 break;
             case 'CATEGORIES':
-                current.categories = current.categories || [];
-                current.categories.push(...value.split(','));
+                current.categories = value.split(',');
                 break;
             case 'ORGANIZER':
                 current.organizer = value.replace('MAILTO:', '');
                 break;
             case 'ATTENDEE':
-                current.attendees = current.attendees || [];
-                current.attendees.push(value.replace('MAILTO:', ''));
+                current.attendees = (current.attendees || []).concat(
+                    value.replace('MAILTO:', '')
+                );
                 break;
             case 'LOCATION':
                 current.location = value;
                 break;
             default:
-                current[key.toLowerCase()] = value; // Solution 1: dynamic field
+                break;
         }
-    }
+
+        // ✅ capture event when END:VEVENT
+        if (line === 'END:VEVENT') {
+            if (current.uid) {
+                events.push({
+                    uid: current.uid!,
+                    dtstamp: current.dtstamp!,
+                    start: current.start!,
+                    end: current.end!,
+                    summary: current.summary,
+                    description: current.description,
+                    categories: current.categories || [],
+                    organizer: current.organizer,
+                    attendees: current.attendees || [],
+                    location: current.location
+                });
+            }
+            current = {};
+        }
+    });
 
     return events;
 }

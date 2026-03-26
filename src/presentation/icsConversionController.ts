@@ -4,18 +4,16 @@ import { IcsService } from '../application/IcsService';
 
 @Route('v1/conversions')
 export class IcsConversionController extends Controller {
-    private icsService = new IcsService();
+    constructor(private readonly icsService: IcsService) {
+        super();
+    }
 
     @Post()
     @SuccessResponse('201', 'Created')
     public async createConversion(
         @Body() body: ConvertIcsRequest
     ): Promise<ConvertIcsResponse> {
-
-        if (!body?.url) {
-            this.setStatus(400);
-            throw new Error('Missing url');
-        }
+        console.log('[Controller] createConversion called');
 
         const events = await this.icsService.convertFromUrl(body.url);
 

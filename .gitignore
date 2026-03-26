@@ -89,3 +89,4 @@ http-client.private.env.json
 .env
 node_modules
 dist
+coverage

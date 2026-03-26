@@ -4,7 +4,16 @@ import swaggerUi from 'swagger-ui-express';
 import { RegisterRoutes } from '../routes/routes';
 import * as swaggerDocument from '../../dist/swagger.json';
 
+import { IcsService } from '../application/IcsService';
+
+const icsService = new IcsService();
+
 const app = express();
+
+// === Service == //
+app.locals.services = {
+    icsService
+};
 
 // === Middleware ===
 app.use(express.json());

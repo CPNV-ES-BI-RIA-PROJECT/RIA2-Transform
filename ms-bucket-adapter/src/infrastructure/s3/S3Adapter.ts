@@ -1,7 +1,7 @@
 import {
     S3Client,
     PutObjectCommand,
-    GetObjectCommand,
+    GetObjectCommand, HeadBucketCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import fs from "fs";
@@ -11,6 +11,17 @@ export class S3Adapter {
 
     constructor(private s3Client: S3Client) {
         this.expiresIn = Number(process.env.S3_PRESIGNED_EXPIRES || 3600);
+    }
+
+    // ---------------------------
+    // Health check
+    // ---------------------------
+    async checkBucketAccess(bucket: string): Promise<void> {
+        await this.s3Client.send(
+            new HeadBucketCommand({
+                Bucket: bucket,
+            })
+        );
     }
 
     // ---------------------------

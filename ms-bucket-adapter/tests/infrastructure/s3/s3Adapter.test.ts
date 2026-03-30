@@ -5,7 +5,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Readable } from "stream";
 import fs from "fs";
 
-import { S3Adapter } from "../../../src/infrastructure/s3/S3Adapter";
+import { S3Adapter } from "../../../src/infrastructure/s3/S3Adapter.js";
 
 // --- MOCKS ---
 

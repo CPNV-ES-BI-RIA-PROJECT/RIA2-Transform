@@ -8,7 +8,6 @@ import fs from "fs";
 import { S3Adapter } from "../../../src/infrastructure/s3/S3Adapter.js";
 
 // --- MOCKS ---
-
 jest.mock("@aws-sdk/client-s3");
 jest.mock("@aws-sdk/s3-request-presigner");
 jest.mock("fs");
@@ -22,7 +21,11 @@ describe("S3Adapter", () => {
     beforeEach(() => {
         jest.clearAllMocks();
 
-        const sendMock = jest.fn<Promise<any>, [any]>();
+        // ✅ inject env variable
+        process.env.S3_BUCKET = bucketName;
+        process.env.S3_PRESIGNED_EXPIRES_IN = "3600";
+
+        const sendMock = jest.fn();
 
         s3ClientMock = {
             send: sendMock,
@@ -37,17 +40,26 @@ describe("S3Adapter", () => {
     describe("uploadFile", () => {
         it("should upload a local file to S3 with provided key", async () => {
             const localPath = "/tmp/file.json";
-            const remotePath = "s3://test-bucket/my/custom/path/file.json";
+            const key = "my/custom/path/file.json";
 
             const fakeStream = new Readable();
             (fs.createReadStream as jest.Mock).mockReturnValue(fakeStream);
 
-            s3ClientMock.send.mockImplementation(async () => ({}));
+            (s3ClientMock.send as jest.Mock).mockResolvedValue({});
 
-            await adapter.uploadFile(localPath, remotePath);
+            await adapter.uploadFile(localPath, key);
 
             expect(s3ClientMock.send).toHaveBeenCalledTimes(1);
-            expect(s3ClientMock.send.mock.calls[0][0]).toBeInstanceOf(PutObjectCommand);
+
+            const command = s3ClientMock.send.mock.calls[0][0] as PutObjectCommand;
+
+            expect(command).toBeInstanceOf(PutObjectCommand);
+
+            expect((command as any).input).toMatchObject({
+                Bucket: bucketName,
+                Key: key,
+                Body: fakeStream,
+            });
         });
     });
 
@@ -56,26 +68,24 @@ describe("S3Adapter", () => {
     // ---------------------------
     describe("generatePresignedUrl", () => {
         it("should return a presigned URL", async () => {
-            const remotePath = "s3://test-bucket/my/custom/path/file.json";
+            const key = "my/custom/path/file.json";
             const fakeUrl = "https://signed-url";
 
-            // spy on GetObjectCommand constructor
-            const getObjectSpy = jest.spyOn(require("@aws-sdk/client-s3"), "GetObjectCommand");
-
-            // mock getSignedUrl to return the fake URL
             (getSignedUrl as jest.Mock).mockResolvedValue(fakeUrl);
 
-            const result = await adapter.generatePresignedUrl(remotePath);
+            const result = await adapter.generatePresignedUrl(key);
 
-            // assert the command was created with correct params
-            expect(getObjectSpy).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    Bucket: "test-bucket",
-                    Key: "my/custom/path/file.json",
-                })
-            );
+            expect(getSignedUrl).toHaveBeenCalledTimes(1);
 
-            // assert the returned URL is correct
+            const command = (getSignedUrl as jest.Mock).mock.calls[0][1] as GetObjectCommand;
+
+            expect(command).toBeInstanceOf(GetObjectCommand);
+
+            expect((command as any).input).toMatchObject({
+                Bucket: bucketName,
+                Key: key,
+            });
+
             expect(result).toBe(fakeUrl);
         });
     });

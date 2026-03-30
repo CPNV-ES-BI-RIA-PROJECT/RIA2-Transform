@@ -1,41 +1,11 @@
-// src/presentation/controllers/ObjectController.ts
+// src/presentation/controllers/controller.ts
 
-import {
-    Body,
-    Controller,
-    Post,
-    Route,
-    Path,
-    Tags,
-} from "tsoa";
+// Re-export S3Controller so other modules can import it
+export { S3Controller } from "./S3Controller.js";
 
-import { S3Adapter } from "../../infrastructure/s3/S3Adapter";
-import {
+// Optionally re-export all DTOs from the same folder
+export {
     UploadObjectRequestDto,
-    UploadObjectResponseDto,
+    PublishObjectRequestDto,
     PublishObjectResponseDto,
-} from "../dtos/ObjectDtos";
-
-@Route("/api/v1/objects")
-@Tags("Objects")
-export class ObjectController extends Controller {
-    constructor(private readonly s3Adapter: S3Adapter) {
-        super();
-    }
-
-    @Post("/")
-    public async uploadObject(
-        @Body() body: UploadObjectRequestDto
-    ): Promise<UploadObjectResponseDto> {
-        const result = await this.s3Adapter.uploadFile(body.localPath);
-        return { key: result.key };
-    }
-
-    @Post("/{id}/publish")
-    public async publishObject(
-        @Path() id: string
-    ): Promise<PublishObjectResponseDto> {
-        const url = await this.s3Adapter.generatePresignedUrl(id);
-        return { url };
-    }
-}
+} from "../dtos/ObjectDtos.js";

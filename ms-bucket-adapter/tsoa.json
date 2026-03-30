@@ -1,15 +1,14 @@
 {
   "entryFile": "src/main/server.ts",
-  "noImplicitAdditionalProperties": "throw-on-extras",
-  "controllerPathGlobs": ["src/presentation/*Controller.ts"],
+  "controllerPathGlobs": ["src/presentation/controllers/*.ts"],
   "spec": {
     "outputDirectory": "dist",
-    "specVersion": 3,
-    "basePath": "/",
-    "securityDefinitions": {},
-    "specFile": "swagger.json"
+    "specVersion": 3
   },
   "routes": {
-    "routesDir": "src/routes"
+    "routesDir": "src/routes",
+    "middleware": "express",
+    "esm": true,
+    "basePath": "/api"
   }
 }

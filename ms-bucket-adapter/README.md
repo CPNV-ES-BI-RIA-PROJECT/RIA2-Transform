@@ -1,25 +1,24 @@
-# ICS Transform Microservice
+# Bucket Adapter Microservice
 
 ## Description
 
-ICS Transform Microservice is a TypeScript-based service that converts ICS calendar files into JSON events. It is designed as a modular, scalable microservice, following clean architecture principles, and ready to integrate with other components like Google Drive, cache, or message brokers.
+The Bucket Adapter microservice provides a simple interface to store JSON results from ETL or transformation processes into AWS S3 and to generate presigned URLs for secure access. It acts as a thin wrapper over S3, abstracting bucket/key management and exposing easy-to-use HTTP endpoints.
 
 ## Getting Started
 
 ### Prerequisites
 
-List all dependencies and their version needed by the project as :
-
-* DataBase Engine (MySql, PostgreSQL, MSSQL,...)
-* IDE used (PhpStorm, Visual Studio Code, IntelliJ,...)
-* Package manager (Nuget, Composer, npm, ...)
-* OS supported (W2k22, Debian12,...)
-* Virtualization (Docker, .Net, .JDK, .JRE)
+//TODO
 
 ### Configuration
 
-How to set up the database?
-How do you set the sensitive data?
+* Set the environnement variables
+
+```bash
+cp sample.env .env
+```
+
+* Update the value
 
 ## Usage
 
@@ -49,18 +48,37 @@ pnpm test
 
 # Call the API
 
+* Upload a new objet on the bucket
+
 ```bash
-POST /api/v1/convert
-Body: { "url": "https://example.com/calendar.ics" }
-Response: { "events": [ ... ] }
+  curl -X POST http://localhost:3000/api/v1/objects \
+    -H "Content-Type: application/json" \
+    -d '{
+          "localPath": "/tmp/results.json",
+          "remotePath": "s3://my-bucket/etl/results/results.json"
+        }'
+```
+
+* Publish the object using a presigned url
+
+```bash
+  curl -X POST http://localhost:3000/api/v1/objects/publish \
+  -H "Content-Type: application/json" \
+  -d '{
+  "remotePath": "s3://my-bucket/etl/results/results.json"
+  }'
 ```
 
 ## Deployment
 
 ### On dev environment
 
-How to get dependencies and build?
-How to run the tests?
+* Using tsoa to update the router
+
+```bash
+npx tsoa routes
+npx tsoa spec
+```
 
 ### On stage environment
 

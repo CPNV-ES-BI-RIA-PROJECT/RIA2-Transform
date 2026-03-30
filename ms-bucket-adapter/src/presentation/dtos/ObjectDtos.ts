@@ -1,11 +1,10 @@
-// src/presentation/dtos/ObjectDtos.ts
-
 export interface UploadObjectRequestDto {
     localPath: string;
+    remotePath: string;
 }
 
-export interface UploadObjectResponseDto {
-    key: string;
+export interface PublishObjectRequestDto {
+    remotePath: string;
 }
 
 export interface PublishObjectResponseDto {

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="81c504c3-9063-4f59-9680-1288f88122a6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.dockerignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/calendar-to-invoice.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deploy/publish-image-latest.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jest.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/IcsService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/icsParser.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/http/fetchIcs.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/server.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/presentation/icsConversionController.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/routes.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/share/utils/dateUtils.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/ddl.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/empty.ics" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/expectedMultiEvents.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/expectedSingleEvent.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/multiEvents.ics" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/multiple-events.ics" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/multiple-events.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/multiple-events.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/multiple-events.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/single-event.ics" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/single-event.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/single-event.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/singleEvent.ics" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/data/unsupported-media-type.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/icsService.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsoa.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/ical-js.d.ts" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="3BV1WyNsYKylrePxxhV7bbKYQCP" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "develop",
+    "last_opened_file_path": "/home/nicolas_glassey/Desktop/Artisan-it/transform"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-WS-253.31033.133" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="81c504c3-9063-4f59-9680-1288f88122a6" name="Changes" comment="" />
+      <created>1774559458453</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1774559458453</updated>
+      <workItem from="1774559459631" duration="33000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

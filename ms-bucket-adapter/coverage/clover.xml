@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1774559011797" clover="3.2.0">
+  <project timestamp="1774559011797" name="All files">
+    <metrics statements="69" coveredstatements="62" conditionals="34" coveredconditionals="25" methods="8" coveredmethods="7" elements="111" coveredelements="94" complexity="0" loc="69" ncloc="69" packages="2" files="3" classes="3"/>
+    <package name="domain">
+      <metrics statements="50" coveredstatements="50" conditionals="29" coveredconditionals="24" methods="6" coveredmethods="5"/>
+      <file name="icsParser.ts" path="/home/nicolas_glassey/Desktop/Artisan-it/ics-converter/src/domain/icsParser.ts">
+        <metrics statements="46" coveredstatements="46" conditionals="29" coveredconditionals="24" methods="6" coveredmethods="5"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="9" count="132" type="stmt"/>
+        <line num="10" count="132" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="19" count="121" type="stmt"/>
+        <line num="20" count="121" type="cond" truecount="0" falsecount="1"/>
+        <line num="22" count="121" type="stmt"/>
+        <line num="23" count="121" type="stmt"/>
+        <line num="25" count="121" type="stmt"/>
+        <line num="26" count="121" type="stmt"/>
+        <line num="27" count="121" type="stmt"/>
+        <line num="28" count="22" type="stmt"/>
+        <line num="29" count="22" type="cond" truecount="3" falsecount="0"/>
+        <line num="32" count="121" type="cond" truecount="11" falsecount="0"/>
+        <line num="34" count="11" type="stmt"/>
+        <line num="35" count="11" type="stmt"/>
+        <line num="37" count="11" type="stmt"/>
+        <line num="38" count="11" type="stmt"/>
+        <line num="40" count="11" type="stmt"/>
+        <line num="44" count="11" type="stmt"/>
+        <line num="46" count="11" type="stmt"/>
+        <line num="50" count="11" type="stmt"/>
+        <line num="52" count="11" type="stmt"/>
+        <line num="53" count="11" type="stmt"/>
+        <line num="55" count="11" type="stmt"/>
+        <line num="56" count="11" type="stmt"/>
+        <line num="58" count="11" type="stmt"/>
+        <line num="59" count="11" type="stmt"/>
+        <line num="61" count="11" type="stmt"/>
+        <line num="62" count="11" type="stmt"/>
+        <line num="64" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="67" count="11" type="stmt"/>
+        <line num="69" count="11" type="stmt"/>
+        <line num="70" count="11" type="stmt"/>
+        <line num="72" count="11" type="stmt"/>
+        <line num="76" count="121" type="cond" truecount="1" falsecount="0"/>
+        <line num="77" count="11" type="cond" truecount="1" falsecount="0"/>
+        <line num="78" count="11" type="stmt"/>
+        <line num="91" count="11" type="stmt"/>
+        <line num="95" count="2" type="stmt"/>
+      </file>
+      <file name="types.ts" path="/home/nicolas_glassey/Desktop/Artisan-it/ics-converter/src/domain/types.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="share.utils">
+      <metrics statements="19" coveredstatements="12" conditionals="5" coveredconditionals="1" methods="2" coveredmethods="2"/>
+      <file name="dateUtils.ts" path="/home/nicolas_glassey/Desktop/Artisan-it/ics-converter/src/share/utils/dateUtils.ts">
+        <metrics statements="19" coveredstatements="12" conditionals="5" coveredconditionals="1" methods="2" coveredmethods="2"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="8" count="33" type="stmt"/>
+        <line num="10" count="33" type="stmt"/>
+        <line num="12" count="33" type="cond" truecount="1" falsecount="1"/>
+        <line num="14" count="33" type="stmt"/>
+        <line num="15" count="33" type="stmt"/>
+        <line num="16" count="33" type="stmt"/>
+        <line num="17" count="33" type="stmt"/>
+        <line num="18" count="33" type="stmt"/>
+        <line num="19" count="33" type="stmt"/>
+        <line num="20" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="32" count="165" type="stmt"/>
+        <line num="33" count="33" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

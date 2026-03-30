@@ -16,6 +16,8 @@
     "generate": "pnpm run tsoa:routes && pnpm run tsoa:spec"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1019.0",
+    "@aws-sdk/s3-request-presigner": "^3.1019.0",
     "@tsoa/runtime": "7.0.0-alpha.0",
     "axios": "^1.5.0",
     "express": "^4.18.2",

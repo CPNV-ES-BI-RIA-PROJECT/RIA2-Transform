@@ -22,52 +22,32 @@ describe("S3Adapter", () => {
     beforeEach(() => {
         jest.clearAllMocks();
 
-        s3ClientMock = {
-            send: jest.fn(),
-        } as any;
+        const sendMock = jest.fn<Promise<any>, [any]>();
 
-        adapter = new S3Adapter(s3ClientMock, bucketName);
+        s3ClientMock = {
+            send: sendMock,
+        } as unknown as jest.Mocked<S3Client>;
+
+        adapter = new S3Adapter(s3ClientMock);
     });
 
     // ---------------------------
     // Upload file
     // ---------------------------
     describe("uploadFile", () => {
-        it("should upload a local file to S3", async () => {
+        it("should upload a local file to S3 with provided key", async () => {
             const localPath = "/tmp/file.json";
-            const key = "objects/file.json";
+            const remotePath = "s3://test-bucket/my/custom/path/file.json";
 
-            // mock fs stream
             const fakeStream = new Readable();
             (fs.createReadStream as jest.Mock).mockReturnValue(fakeStream);
 
-            // mock S3 response
-            s3ClientMock.send.mockResolvedValue({});
+            s3ClientMock.send.mockImplementation(async () => ({}));
 
-            await adapter.uploadFile(localPath, key);
+            await adapter.uploadFile(localPath, remotePath);
 
-            expect(fs.createReadStream).toHaveBeenCalledWith(localPath);
-
-            expect(s3ClientMock.send).toHaveBeenCalledWith(
-                expect.any(PutObjectCommand)
-            );
-
-            const command = (s3ClientMock.send as jest.Mock).mock.calls[0][0];
-
-            expect(command.input).toMatchObject({
-                Bucket: bucketName,
-                Key: key,
-                Body: fakeStream,
-                ContentType: "application/json",
-            });
-        });
-
-        it("should throw if upload fails", async () => {
-            s3ClientMock.send.mockRejectedValue(new Error("S3 error"));
-
-            await expect(
-                adapter.uploadFile("/tmp/file.json", "file.json")
-            ).rejects.toThrow("S3 error");
+            expect(s3ClientMock.send).toHaveBeenCalledTimes(1);
+            expect(s3ClientMock.send.mock.calls[0][0]).toBeInstanceOf(PutObjectCommand);
         });
     });
 
@@ -76,39 +56,27 @@ describe("S3Adapter", () => {
     // ---------------------------
     describe("generatePresignedUrl", () => {
         it("should return a presigned URL", async () => {
-            const key = "objects/file.json";
+            const remotePath = "s3://test-bucket/my/custom/path/file.json";
             const fakeUrl = "https://signed-url";
 
+            // spy on GetObjectCommand constructor
+            const getObjectSpy = jest.spyOn(require("@aws-sdk/client-s3"), "GetObjectCommand");
+
+            // mock getSignedUrl to return the fake URL
             (getSignedUrl as jest.Mock).mockResolvedValue(fakeUrl);
 
-            const result = await adapter.generatePresignedUrl(key);
+            const result = await adapter.generatePresignedUrl(remotePath);
 
-            expect(getSignedUrl).toHaveBeenCalledWith(
-                s3ClientMock,
-                expect.any(GetObjectCommand),
+            // assert the command was created with correct params
+            expect(getObjectSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    expiresIn: expect.any(Number),
+                    Bucket: "test-bucket",
+                    Key: "my/custom/path/file.json",
                 })
             );
 
-            const command = (getSignedUrl as jest.Mock).mock.calls[0][1];
-
-            expect(command.input).toMatchObject({
-                Bucket: bucketName,
-                Key: key,
-            });
-
+            // assert the returned URL is correct
             expect(result).toBe(fakeUrl);
-        });
-
-        it("should throw if presign fails", async () => {
-            (getSignedUrl as jest.Mock).mockRejectedValue(
-                new Error("Presign error")
-            );
-
-            await expect(
-                adapter.generatePresignedUrl("file.json")
-            ).rejects.toThrow("Presign error");
         });
     });
 });

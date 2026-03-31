@@ -20,7 +20,7 @@ async function startServer() {
             throw new Error("S3_BUCKET env variable is not defined");
         }
 
-        // ✅ Health check
+        // Health check
         await adapter.checkBucketAccess(bucket);
 
         console.log(`✅ S3 bucket "${bucket}" is accessible`);

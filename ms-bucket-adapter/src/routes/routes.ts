@@ -12,11 +12,19 @@ import type { Request as ExRequest, Response as ExResponse, RequestHandler, Rout
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "UploadObjectResponseDto": {
+        "dataType": "refObject",
+        "properties": {
+            "key": {"dataType":"string","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UploadObjectRequestDto": {
         "dataType": "refObject",
         "properties": {
-            "localPath": {"dataType":"string","required":true},
-            "remotePath": {"dataType":"string","required":true},
+            "fileName": {"dataType":"string","required":true},
+            "fileContent": {"dataType":"string","required":true},
         },
         "additionalProperties": true,
     },
@@ -25,14 +33,6 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "url": {"dataType":"string","required":true},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "PublishObjectRequestDto": {
-        "dataType": "refObject",
-        "properties": {
-            "remotePath": {"dataType":"string","required":true},
         },
         "additionalProperties": true,
     },
@@ -85,9 +85,9 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsS3Controller_publishObject: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"ref":"PublishObjectRequestDto"},
+                fileName: {"in":"path","name":"fileName","required":true,"dataType":"string"},
         };
-        app.post('/api/api/v1/objects/publish',
+        app.post('/api/api/v1/objects/:fileName/publish',
             ...(fetchMiddlewares<RequestHandler>(S3Controller)),
             ...(fetchMiddlewares<RequestHandler>(S3Controller.prototype.publishObject)),
 

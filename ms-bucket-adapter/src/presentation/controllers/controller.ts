@@ -6,6 +6,6 @@ export { S3Controller } from "./S3Controller.js";
 // Optionally re-export all DTOs from the same folder
 export {
     UploadObjectRequestDto,
-    PublishObjectRequestDto,
+    UploadObjectResponseDto,
     PublishObjectResponseDto,
 } from "../dtos/ObjectDtos.js";

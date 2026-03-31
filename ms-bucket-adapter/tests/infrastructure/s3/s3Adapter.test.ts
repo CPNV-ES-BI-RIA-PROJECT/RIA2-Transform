@@ -1,12 +1,14 @@
+// tests/controllers/S3Controller.test.ts
+
 import { S3Controller } from "../../../src/presentation/controllers/S3Controller.js";
 import { S3Adapter } from "../../../src/infrastructure/s3/S3Adapter.js";
 
-describe("S3Controller", () => {
+describe("S3Controller (end-user behavior)", () => {
     let adapterMock: jest.Mocked<S3Adapter>;
     let controller: S3Controller;
 
     const fileName = "file.json";
-    const fileContent = '{"hello":"world"}';
+    const fileBuffer = Buffer.from('{"hello":"world"}');
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -27,16 +29,53 @@ describe("S3Controller", () => {
         it("should upload file and return key", async () => {
             adapterMock.uploadFile.mockResolvedValue(undefined);
 
-            const result = await controller.uploadObject({
-                fileName,
-                fileContent,
-            });
+            const fakeFile: Express.Multer.File = {
+                originalname: fileName,
+                buffer: fileBuffer,
+                fieldname: "file",
+                encoding: "7bit",
+                mimetype: "application/json",
+                size: fileBuffer.length,
+                destination: "",
+                filename: "",
+                path: "",
+                stream: null as any, // not used in the controller
+            };
 
-            expect(adapterMock.uploadFile).toHaveBeenCalledWith(fileName, fileContent);
+            const result = await controller.uploadObject(fakeFile);
 
-            expect(result).toEqual({
-                key: fileName,
-            });
+            expect(adapterMock.uploadFile).toHaveBeenCalledWith(fileName, fileBuffer);
+            expect(result).toEqual({ key: fileName });
+        });
+
+        it("should throw when no file is provided", async () => {
+            // @ts-expect-error testing missing file
+            await expect(controller.uploadObject(undefined)).rejects.toThrow("File is required");
+        });
+
+        it("should throw when file exceeds max size", async () => {
+            const maxSize = 5; // bytes
+            process.env.S3_MAX_UPLOAD_SIZE = maxSize.toString();
+
+            const largeBuffer = Buffer.from("This is larger than 5 bytes");
+            const largeFile: Express.Multer.File = {
+                originalname: "large-file.json",
+                buffer: largeBuffer,
+                fieldname: "file",
+                encoding: "7bit",
+                mimetype: "application/json",
+                size: largeBuffer.length,
+                destination: "",
+                filename: "",
+                path: "",
+                stream: null as any,
+            };
+
+            if (largeFile.size > Number(process.env.UPLOAD_MAX_FILE_SIZE)) {
+                await expect(controller.uploadObject(largeFile)).rejects.toThrow(
+                    `File exceeds maximum size of ${process.env.S3_MAX_UPLOAD_SIZE} bytes`
+                );
+            }
         });
     });
 
@@ -51,10 +90,7 @@ describe("S3Controller", () => {
             const result = await controller.publishObject(fileName);
 
             expect(adapterMock.generatePresignedUrl).toHaveBeenCalledWith(fileName);
-
-            expect(result).toEqual({
-                url: fakeUrl,
-            });
+            expect(result).toEqual({ url: fakeUrl });
         });
     });
 
@@ -68,10 +104,7 @@ describe("S3Controller", () => {
             const result = await controller.healthcheck();
 
             expect(adapterMock.checkBucketAccess).toHaveBeenCalled();
-
-            expect(result).toEqual({
-                status: "ok",
-            });
+            expect(result).toEqual({ status: "ok" });
         });
 
         it("should throw when bucket is not accessible", async () => {

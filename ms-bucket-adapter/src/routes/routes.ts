@@ -6,6 +6,8 @@ import {  fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { S3Controller } from './../presentation/controllers/S3Controller.js';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
+import multer from 'multer';
+
 
 
 
@@ -16,15 +18,6 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "key": {"dataType":"string","required":true},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "UploadObjectRequestDto": {
-        "dataType": "refObject",
-        "properties": {
-            "fileName": {"dataType":"string","required":true},
-            "fileContent": {"dataType":"string","required":true},
         },
         "additionalProperties": true,
     },
@@ -45,13 +38,14 @@ const templateService = new ExpressTemplateService(models, {"noImplicitAdditiona
 
 
 
-export function RegisterRoutes(app: Router) {
+export function RegisterRoutes(app: Router,opts?:{multer?:ReturnType<typeof multer>}) {
 
     // ###########################################################################################################
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
 
+    const upload = opts?.multer ||  multer({"limits":{"fileSize":8388608}});
 
     
         const argsS3Controller_healthcheck: Record<string, TsoaRoute.ParameterSchema> = {
@@ -84,9 +78,15 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsS3Controller_uploadObject: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"ref":"UploadObjectRequestDto"},
+                file: {"in":"formData","name":"file","required":true,"dataType":"file"},
         };
         app.post('/api/v1/objects',
+            upload.fields([
+                {
+                    name: "file",
+                    maxCount: 1
+                }
+            ]),
             ...(fetchMiddlewares<RequestHandler>(S3Controller)),
             ...(fetchMiddlewares<RequestHandler>(S3Controller.prototype.uploadObject)),
 

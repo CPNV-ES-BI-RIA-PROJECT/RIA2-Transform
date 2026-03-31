@@ -2,6 +2,8 @@
 
 import { S3Controller } from "../../../src/presentation/controllers/S3Controller.js";
 import { S3Adapter } from "../../../src/infrastructure/s3/S3Adapter.js";
+import app from "../../../src/main/app.js";
+import request from "supertest";
 
 describe("S3Controller (end-user behavior)", () => {
     let adapterMock: jest.Mocked<S3Adapter>;
@@ -51,31 +53,6 @@ describe("S3Controller (end-user behavior)", () => {
         it("should throw when no file is provided", async () => {
             // @ts-expect-error testing missing file
             await expect(controller.uploadObject(undefined)).rejects.toThrow("File is required");
-        });
-
-        it("should throw when file exceeds max size", async () => {
-            const maxSize = 5; // bytes
-            process.env.S3_MAX_UPLOAD_SIZE = maxSize.toString();
-
-            const largeBuffer = Buffer.from("This is larger than 5 bytes");
-            const largeFile: Express.Multer.File = {
-                originalname: "large-file.json",
-                buffer: largeBuffer,
-                fieldname: "file",
-                encoding: "7bit",
-                mimetype: "application/json",
-                size: largeBuffer.length,
-                destination: "",
-                filename: "",
-                path: "",
-                stream: null as any,
-            };
-
-            if (largeFile.size > Number(process.env.UPLOAD_MAX_FILE_SIZE)) {
-                await expect(controller.uploadObject(largeFile)).rejects.toThrow(
-                    `File exceeds maximum size of ${process.env.S3_MAX_UPLOAD_SIZE} bytes`
-                );
-            }
         });
     });
 

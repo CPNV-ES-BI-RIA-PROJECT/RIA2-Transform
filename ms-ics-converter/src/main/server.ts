@@ -1,44 +1,61 @@
 // src/main/server.ts
-import express, { Request, Response, NextFunction } from 'express';
-import swaggerUi from 'swagger-ui-express';
-import { RegisterRoutes } from '../routes/routes';
-import * as swaggerDocument from '../../dist/swagger.json';
+import "dotenv/config";
+import app from "./app.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "../swagger/swagger.json" with { type: "json" };
 
-import { IcsService } from '../application/IcsService';
+import { IcsService } from "../application/IcsService.js";
 
-const icsService = new IcsService();
+const PORT = process.env.PORT || 3000;
 
-const app = express();
+async function startServer() {
+    try {
+        console.log("Starting ICS microservice...");
 
-// === Service == //
-app.locals.services = {
-    icsService
-};
+        // ----------------------
+        // Services
+        // ----------------------
+        const icsService = new IcsService();
 
-// === Middleware ===
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+        // make service available (optional, for advanced use)
+        app.locals.services = {
+            icsService,
+        };
 
-// === Swagger UI ===
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+        // ----------------------
+        // Swagger
+        // ----------------------
+        app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// === TSOA-generated routes ===
-RegisterRoutes(app);
+        // ----------------------
+        // Healthcheck
+        // ----------------------
+        app.get("/health", (_req, res) => {
+            res.status(200).json({ status: "ok" });
+        });
 
-// === Healthcheck ===
-app.get('/health', (_req: Request, res: Response) => {
-    res.status(200).json({ status: 'ok' });
-});
+        // ----------------------
+        // Global error handler
+        // ----------------------
+        app.use((err: any, _req: any, res: any, _next: any) => {
+            console.error(err);
+            res.status(err.status || 500).json({
+                message: err.message || "Internal Server Error",
+            });
+        });
 
-// === Error handler ===
-app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    console.error(err);
-    res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
-});
+        // ----------------------
+        // Start server
+        // ----------------------
+        app.listen(PORT, () => {
+            console.log(`🚀 Server running on port ${PORT}`);
+            console.log(`📚 Swagger: http://localhost:${PORT}/docs`);
+        });
 
-// === Start server ===
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-    console.log(`Swagger UI available at http://localhost:${port}/docs`);
-});
+    } catch (error) {
+        console.error("❌ Failed to start server:", error);
+        process.exit(1);
+    }
+}
+
+startServer();

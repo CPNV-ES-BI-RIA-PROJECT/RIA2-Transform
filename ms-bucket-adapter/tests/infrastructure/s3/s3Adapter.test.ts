@@ -2,8 +2,6 @@
 
 import { S3Controller } from "../../../src/presentation/controllers/S3Controller.js";
 import { S3Adapter } from "../../../src/infrastructure/s3/S3Adapter.js";
-import app from "../../../src/main/app.js";
-import request from "supertest";
 
 describe("S3Controller (end-user behavior)", () => {
     let adapterMock: jest.Mocked<S3Adapter>;

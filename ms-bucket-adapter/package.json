@@ -5,7 +5,7 @@
   "main": "dist/main/server.js",
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc & pnpm generate",
     "dev": "tsc --watch & nodemon dist/main/server.js",
     "dev:watch": "pnpm build:watch & pnpm start:watch",
     "build:watch": "tsc --watch",

@@ -1,5 +1,5 @@
 import express from 'express';
-import { RegisterRoutes } from './routes/routes'; // 👈 add this
+import { RegisterRoutes } from '../routes/routes.js'; // 👈 add this
 import bodyParser from 'body-parser';
 
 const app = express();

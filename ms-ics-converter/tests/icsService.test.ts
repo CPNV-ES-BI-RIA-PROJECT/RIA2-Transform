@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { parseIcs, IcsEvent } from '../src/domain/icsParser';
+import { parseIcs, IcsEvent } from '../src/domain/icsParser.js';
 
 describe('ICS Parser Service', () => {
     const loadIcs = (filename: string) =>

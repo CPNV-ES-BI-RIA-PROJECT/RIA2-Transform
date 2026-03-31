@@ -31,6 +31,7 @@ async function startServer() {
 
         app.listen(PORT, () => {
             console.log(`🚀 Server running on port ${PORT}`);
+            console.log(`📚 Swagger: http://localhost:${PORT}/docs`);
         });
 
     } catch (error) {

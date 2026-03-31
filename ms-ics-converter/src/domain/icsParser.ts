@@ -1,5 +1,5 @@
-import { IcsEvent } from './types';
-import { formatDate } from "../share/utils/dateUtils";
+import { IcsEvent } from './types.js';
+import { formatDate } from "../share/utils/dateUtils.js";
 
 export { IcsEvent };
 

@@ -1,0 +1,147 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"UploadObjectResponseDto": {
+				"properties": {
+					"key": {
+						"type": "string",
+						"description": "Uploaded object key"
+					}
+				},
+				"required": [
+					"key"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"PublishObjectResponseDto": {
+				"properties": {
+					"url": {
+						"type": "string",
+						"description": "Pre-signed URL to access the object"
+					}
+				},
+				"required": [
+					"url"
+				],
+				"type": "object",
+				"additionalProperties": true
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "bucket-adapter-microservice",
+		"version": "1.0.0",
+		"description": "bucket-adapter-microservice",
+		"contact": {}
+	},
+	"paths": {
+		"/v1/objects/health": {
+			"get": {
+				"operationId": "Healthcheck",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"status": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"status"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/v1/objects": {
+			"post": {
+				"operationId": "UploadObject",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UploadObjectResponseDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Upload a file to S3",
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"file": {
+										"type": "string",
+										"format": "binary"
+									}
+								},
+								"required": [
+									"file"
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/objects/{fileName}/publish": {
+			"post": {
+				"operationId": "PublishObject",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PublishObjectResponseDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Generate a presigned URL for a file in S3",
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "fileName",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

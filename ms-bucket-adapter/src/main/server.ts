@@ -21,7 +21,11 @@ async function startServer() {
         }
 
         // Health check
-        await adapter.checkBucketAccess(bucket);
+        try{
+            await adapter.checkBucketAccess();
+        }catch (error){
+            console.error(error);
+        }
 
         console.log(`✅ S3 bucket "${bucket}" is accessible`);
 

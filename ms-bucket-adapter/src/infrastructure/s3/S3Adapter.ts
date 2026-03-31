@@ -30,11 +30,12 @@ export class S3Adapter {
     // ----------------------
     async checkBucketAccess(): Promise<void> {
         const bucket = this.getBucket();
-        await this.s3Client.send(
-            new HeadBucketCommand({
-                Bucket: bucket,
-            })
-        );
+        try {
+            await this.s3Client.send(new HeadBucketCommand({ Bucket: bucket }));
+        } catch (err) {
+            console.error("S3 error:", err);
+            throw err;
+        }
     }
 
     // ----------------------

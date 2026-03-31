@@ -1,6 +1,4 @@
-// src/presentation/controllers/S3Controller.ts
-
-import { Controller, Route, Post, Body, Path } from "tsoa";
+import {Controller, Route, Post, Body, Path, Get} from "tsoa";
 import { S3Adapter } from "../../infrastructure/s3/S3Adapter.js";
 import { S3Client } from "@aws-sdk/client-s3";
 
@@ -13,7 +11,7 @@ import {
 /**
  * Controller for S3 bucket operations
  */
-@Route("api/v1/objects")
+@Route("v1/objects")
 export class S3Controller extends Controller {
     private adapter: S3Adapter;
 
@@ -28,9 +26,20 @@ export class S3Controller extends Controller {
         if (adapter) {
             this.adapter = adapter;
         } else {
-            const s3Client = new S3Client({});
+            const s3Client = new S3Client({
+                region: process.env.AWS_REGION
+            });
             this.adapter = new S3Adapter(s3Client);
         }
+    }
+
+    @Get("/health")
+    public async healthcheck(): Promise<{ status: string }> {
+        await this.adapter.checkBucketAccess();
+
+        return {
+            status: "ok",
+        };
     }
 
     /**

@@ -54,10 +54,39 @@ export function RegisterRoutes(app: Router) {
 
 
     
+        const argsS3Controller_healthcheck: Record<string, TsoaRoute.ParameterSchema> = {
+        };
+        app.get('/api/v1/objects/health',
+            ...(fetchMiddlewares<RequestHandler>(S3Controller)),
+            ...(fetchMiddlewares<RequestHandler>(S3Controller.prototype.healthcheck)),
+
+            async function S3Controller_healthcheck(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsS3Controller_healthcheck, request, response });
+
+                const controller = new S3Controller();
+
+              await templateService.apiHandler({
+                methodName: 'healthcheck',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsS3Controller_uploadObject: Record<string, TsoaRoute.ParameterSchema> = {
                 body: {"in":"body","name":"body","required":true,"ref":"UploadObjectRequestDto"},
         };
-        app.post('/api/api/v1/objects',
+        app.post('/api/v1/objects',
             ...(fetchMiddlewares<RequestHandler>(S3Controller)),
             ...(fetchMiddlewares<RequestHandler>(S3Controller.prototype.uploadObject)),
 
@@ -87,7 +116,7 @@ export function RegisterRoutes(app: Router) {
         const argsS3Controller_publishObject: Record<string, TsoaRoute.ParameterSchema> = {
                 fileName: {"in":"path","name":"fileName","required":true,"dataType":"string"},
         };
-        app.post('/api/api/v1/objects/:fileName/publish',
+        app.post('/api/v1/objects/:fileName/publish',
             ...(fetchMiddlewares<RequestHandler>(S3Controller)),
             ...(fetchMiddlewares<RequestHandler>(S3Controller.prototype.publishObject)),
 

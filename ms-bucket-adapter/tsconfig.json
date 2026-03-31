@@ -12,7 +12,8 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true
   },
   "include": ["src/**/*.ts"]
 }

@@ -1,4 +1,4 @@
-import {Controller, Route, Post, Body, Path, Get} from "tsoa";
+import {Controller, Route, Post, Body, Path, Get, UploadedFile} from "tsoa";
 import { S3Adapter } from "../../infrastructure/s3/S3Adapter.js";
 import { S3Client } from "@aws-sdk/client-s3";
 
@@ -47,12 +47,18 @@ export class S3Controller extends Controller {
      */
     @Post("/")
     public async uploadObject(
-        @Body() body: UploadObjectRequestDto
+        @UploadedFile() file: Express.Multer.File
     ): Promise<UploadObjectResponseDto> {
-        await this.adapter.uploadFile(body.fileName, body.fileContent);
+
+        if (!file) {
+            this.setStatus(400);
+            throw new Error("File is required");
+        }
+
+        await this.adapter.uploadFile(file.originalname, file.buffer);
 
         return {
-            key: body.fileName,
+            key: file.originalname,
         };
     }
 

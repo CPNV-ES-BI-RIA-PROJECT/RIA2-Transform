@@ -10,6 +10,9 @@ The Bucket Adapter microservice provides a simple interface to store JSON result
 
 //TODO
 
+Node
+NPM
+
 ### Configuration
 
 * Set the environnement variables
@@ -18,69 +21,56 @@ The Bucket Adapter microservice provides a simple interface to store JSON result
 cp sample.env .env
 ```
 
-* Update the value
-
-## Usage
-
-# Install dependencies
-```bash
-pnpm install
-```
-# Run in dev mode (hot reload)
-```bash
-pnpm dev
-```
-
-# Build
-```bash
-pnpm build
-```
-
-# Start server
-```bash
-pnpm start
-```
-
-# Run tests
-```bash
-pnpm test
-```
-
 # Call the API
 
 * Upload a new objet on the bucket
 
 ```bash
-  curl -X POST http://localhost:3000/api/v1/objects \
-    -H "Content-Type: application/json" \
-    -d '{
-          "localPath": "/tmp/results.json",
-          "remotePath": "s3://my-bucket/etl/results/results.json"
-        }'
+curl -X POST http://localhost:3000/api/v1/objects \
+  -H "Content-Type: application/json" \
+  -d '{
+    "fileName": "test.json",
+    "fileContent": "{\"hello\":\"world\"}"
+  }'
 ```
 
 * Publish the object using a presigned url
 
 ```bash
-  curl -X POST http://localhost:3000/api/v1/objects/publish \
-  -H "Content-Type: application/json" \
-  -d '{
-  "remotePath": "s3://my-bucket/etl/results/results.json"
-  }'
+curl -X POST http://localhost:3000/api/v1/objects/test.json/publish
+```
+
+```bash
+{
+  "url": "https://your-presigned-url"
+}
 ```
 
 ## Deployment
 
-### On dev environment
-
-* Using tsoa to update the router
+* Update the router
 
 ```bash
-npx tsoa routes
-npx tsoa spec
+pnpm generate
+```
+
+### On dev environment
+
+```bash
+pnpm run dev
 ```
 
 ### On stage environment
+
+```bash
+pnpm build
+```
+
+```bash
+nodemon dist/main/server.js
+```
+
+### On stage prod
 
 How to deploy the application outside the dev environment.
 

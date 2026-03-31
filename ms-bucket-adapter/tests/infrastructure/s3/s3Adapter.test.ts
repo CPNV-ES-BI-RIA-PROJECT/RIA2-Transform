@@ -57,4 +57,27 @@ describe("S3Controller", () => {
             });
         });
     });
+
+    // ----------------------
+    // Healthcheck
+    // ----------------------
+    describe("healthcheck", () => {
+        it("should return ok when bucket is accessible", async () => {
+            adapterMock.checkBucketAccess.mockResolvedValue(undefined);
+
+            const result = await controller.healthcheck();
+
+            expect(adapterMock.checkBucketAccess).toHaveBeenCalled();
+
+            expect(result).toEqual({
+                status: "ok",
+            });
+        });
+
+        it("should throw when bucket is not accessible", async () => {
+            adapterMock.checkBucketAccess.mockRejectedValue(new Error("S3 down"));
+
+            await expect(controller.healthcheck()).rejects.toThrow("S3 down");
+        });
+    });
 });

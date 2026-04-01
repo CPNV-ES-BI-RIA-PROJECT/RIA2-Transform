@@ -11,7 +11,7 @@
 				"properties": {
 					"key": {
 						"type": "string",
-						"description": "Uploaded object key"
+						"description": "Key of the uploaded file in the S3 bucket"
 					}
 				},
 				"required": [
@@ -20,11 +20,29 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"UploadObjectRequestDto": {
+				"properties": {
+					"fileName": {
+						"type": "string",
+						"description": "Name of the file to store in S3"
+					},
+					"content": {
+						"type": "string",
+						"description": "Content of the file as a string (JSON string or plain text)"
+					}
+				},
+				"required": [
+					"fileName",
+					"content"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"PublishObjectResponseDto": {
 				"properties": {
 					"url": {
 						"type": "string",
-						"description": "Pre-signed URL to access the object"
+						"description": "Presigned URL to access the file"
 					}
 				},
 				"required": [
@@ -91,18 +109,9 @@
 				"requestBody": {
 					"required": true,
 					"content": {
-						"multipart/form-data": {
+						"application/json": {
 							"schema": {
-								"type": "object",
-								"properties": {
-									"file": {
-										"type": "string",
-										"format": "binary"
-									}
-								},
-								"required": [
-									"file"
-								]
+								"$ref": "#/components/schemas/UploadObjectRequestDto"
 							}
 						}
 					}

@@ -1,14 +1,14 @@
 // tests/controllers/S3Controller.test.ts
-
 import { S3Controller } from "../../../src/presentation/controllers/S3Controller.js";
 import { S3Adapter } from "../../../src/infrastructure/s3/S3Adapter.js";
+import { UploadObjectRequestDto } from "../../../src/presentation/dtos/ObjectDtos.js";
 
 describe("S3Controller (end-user behavior)", () => {
     let adapterMock: jest.Mocked<S3Adapter>;
     let controller: S3Controller;
 
     const fileName = "file.json";
-    const fileBuffer = Buffer.from('{"hello":"world"}');
+    const fileContent = '{"hello":"world"}';
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -29,28 +29,27 @@ describe("S3Controller (end-user behavior)", () => {
         it("should upload file and return key", async () => {
             adapterMock.uploadFile.mockResolvedValue(undefined);
 
-            const fakeFile: Express.Multer.File = {
-                originalname: fileName,
-                buffer: fileBuffer,
-                fieldname: "file",
-                encoding: "7bit",
-                mimetype: "application/json",
-                size: fileBuffer.length,
-                destination: "",
-                filename: "",
-                path: "",
-                stream: null as any, // not used in the controller
+            const requestBody: UploadObjectRequestDto = {
+                fileName,
+                content: fileContent,
             };
 
-            const result = await controller.uploadObject(fakeFile);
+            const result = await controller.uploadObject(requestBody);
 
-            expect(adapterMock.uploadFile).toHaveBeenCalledWith(fileName, fileBuffer);
+            expect(adapterMock.uploadFile).toHaveBeenCalledWith(fileName, Buffer.from(fileContent, "utf-8"));
             expect(result).toEqual({ key: fileName });
         });
 
-        it("should throw when no file is provided", async () => {
-            // @ts-expect-error testing missing file
-            await expect(controller.uploadObject(undefined)).rejects.toThrow("File is required");
+        it("should throw when fileName is missing", async () => {
+            await expect(
+                controller.uploadObject({ fileName: "", content: fileContent })
+            ).rejects.toThrow("fileName and content are required");
+        });
+
+        it("should throw when content is missing", async () => {
+            await expect(
+                controller.uploadObject({ fileName, content: "" })
+            ).rejects.toThrow("fileName and content are required");
         });
     });
 

@@ -26,11 +26,9 @@ cp sample.env .env
 * Upload a new objet on the bucket
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/objects \
+curl -X POST http://localhost:3001/api/v1/objects \
   -H "Content-Type: application/json" \
-  -d '{
-    "fileName": "test.json",
-  }'
+  -d '{"fileName":"tsoa.json","content":"{\"a\":1}"}'
 ```
 
 * Publish the object using a presigned url

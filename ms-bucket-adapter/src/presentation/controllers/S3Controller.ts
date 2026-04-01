@@ -1,4 +1,4 @@
-import {Controller, Route, Post, Body, Path, Get, UploadedFile} from "tsoa";
+import {Controller, Route, Post, Body, Path, Get, UploadedFile, Middlewares} from "tsoa";
 import { S3Adapter } from "../../infrastructure/s3/S3Adapter.js";
 import { S3Client } from "@aws-sdk/client-s3";
 
@@ -46,33 +46,23 @@ export class S3Controller extends Controller {
      * Upload a file to S3
      */
     @Post("/")
-    public async uploadObject(
-        @UploadedFile() file: Express.Multer.File
-    ): Promise<UploadObjectResponseDto> {
-
-        if (!file) {
+    public async uploadObject(@Body() body: UploadObjectRequestDto): Promise<UploadObjectResponseDto> {
+        if (!body.fileName || !body.content) {
             this.setStatus(400);
-            throw new Error("File is required");
+            throw new Error("fileName and content are required");
         }
 
-        await this.adapter.uploadFile(file.originalname, file.buffer);
+        await this.adapter.uploadFile(body.fileName, Buffer.from(body.content, "utf-8"));
 
-        return {
-            key: file.originalname,
-        };
+        return { key: body.fileName };
     }
 
     /**
      * Generate a presigned URL for a file in S3
      */
     @Post("{fileName}/publish")
-    public async publishObject(
-        @Path() fileName: string
-    ): Promise<PublishObjectResponseDto> {
+    public async publishObject(@Path() fileName: string): Promise<PublishObjectResponseDto> {
         const url = await this.adapter.generatePresignedUrl(fileName);
-
-        return {
-            url,
-        };
+        return { url };
     }
 }

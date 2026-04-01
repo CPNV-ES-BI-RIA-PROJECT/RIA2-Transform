@@ -1,25 +1,27 @@
+// src/presentation/dtos/ObjectDtos.ts
+
 export interface UploadObjectRequestDto {
     /**
-     * Name of the file (used as S3 object key)
+     * Name of the file to store in S3
      */
     fileName: string;
 
     /**
-     * File content (JSON string or raw string)
+     * Content of the file as a string (JSON string or plain text)
      */
-    fileContent: string;
+    content: string;
 }
 
 export interface UploadObjectResponseDto {
     /**
-     * Uploaded object key
+     * Key of the uploaded file in the S3 bucket
      */
     key: string;
 }
 
 export interface PublishObjectResponseDto {
     /**
-     * Pre-signed URL to access the object
+     * Presigned URL to access the file
      */
     url: string;
 }

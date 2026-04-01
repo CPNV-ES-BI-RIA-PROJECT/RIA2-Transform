@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "target": "ES2020",
+    "module": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "NodeNext",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts"]
+}

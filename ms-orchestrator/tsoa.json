@@ -1,0 +1,18 @@
+{
+  "entryFile": "src/main/app.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/presentation/controllers/*.ts"],
+  "spec": {
+    "outputDirectory": "src/swagger",
+    "specVersion": 3,
+    "basePath": "/api",
+    "securityDefinitions": {},
+    "specFile": "swagger.json"
+  },
+  "routes": {
+    "routesDir": "src/routes",
+    "middleware": "express",
+    "esm": true,
+    "basePath": "/api"
+  }
+}

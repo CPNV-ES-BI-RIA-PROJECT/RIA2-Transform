@@ -1,0 +1,149 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"IcsDateTime": {
+				"properties": {
+					"value": {
+						"type": "string"
+					},
+					"timezone": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"value",
+					"timezone"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IcsEvent": {
+				"properties": {
+					"uid": {
+						"type": "string"
+					},
+					"dtstamp": {
+						"type": "string"
+					},
+					"start": {
+						"$ref": "#/components/schemas/IcsDateTime"
+					},
+					"end": {
+						"$ref": "#/components/schemas/IcsDateTime"
+					},
+					"summary": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"categories": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"organizer": {
+						"type": "string"
+					},
+					"attendees": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"location": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"uid",
+					"dtstamp",
+					"start",
+					"end",
+					"categories",
+					"attendees"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ConvertIcsResponse": {
+				"properties": {
+					"events": {
+						"items": {
+							"$ref": "#/components/schemas/IcsEvent"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"events"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ConvertIcsRequest": {
+				"properties": {
+					"url": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"url"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "ics-transform-microservice",
+		"version": "1.0.0",
+		"description": "ICS transform microservice",
+		"contact": {}
+	},
+	"paths": {
+		"/v1/conversions": {
+			"post": {
+				"operationId": "CreateConversion",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ConvertIcsResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ConvertIcsRequest"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/api"
+		}
+	]
+}

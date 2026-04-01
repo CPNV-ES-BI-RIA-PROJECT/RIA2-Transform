@@ -18,7 +18,7 @@
 					"key"
 				],
 				"type": "object",
-				"additionalProperties": true
+				"additionalProperties": false
 			},
 			"PublishObjectResponseDto": {
 				"properties": {
@@ -31,7 +31,7 @@
 					"url"
 				],
 				"type": "object",
-				"additionalProperties": true
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}

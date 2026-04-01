@@ -2,6 +2,9 @@
 
 import "dotenv/config";
 import app from "./app.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "../swagger/swagger.json" with { type: "json" };
+
 import { S3Client } from "@aws-sdk/client-s3";
 import { S3Adapter } from "../infrastructure/s3/S3Adapter.js";
 
@@ -19,6 +22,11 @@ async function startServer() {
         if (!bucket) {
             throw new Error("S3_BUCKET env variable is not defined");
         }
+
+        // ----------------------
+        // Swagger
+        // ----------------------
+        app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
         // Health check
         try{

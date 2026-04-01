@@ -30,7 +30,6 @@ curl -X POST http://localhost:3000/api/v1/objects \
   -H "Content-Type: application/json" \
   -d '{
     "fileName": "test.json",
-    "fileContent": "{\"hello\":\"world\"}"
   }'
 ```
 

@@ -1,11 +1,11 @@
 {
-  "entryFile": "src/main/server.ts",
+  "entryFile": "src/main/app.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
   "controllerPathGlobs": ["src/presentation/controllers/*.ts"],
   "spec": {
     "outputDirectory": "src/swagger",
     "specVersion": 3,
-    "basePath": "/",
+    "basePath": "/api",
     "securityDefinitions": {},
     "specFile": "swagger.json"
   },

@@ -1,6 +1,5 @@
 // src/app.ts
 import express, { Request, Response, NextFunction } from "express";
-import bodyParser from "body-parser";
 import { RegisterRoutes } from "../routes/routes.js";
 import multer from "multer";
 
@@ -9,8 +8,8 @@ const app = express();
 // ----------------------
 // Middleware
 // ----------------------
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 // ---------------------
@@ -20,6 +19,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const upload = multer({
     storage: multer.memoryStorage(),
 });
+
+app.use(upload.any());
 
 
 // ----------------------

@@ -10,11 +10,19 @@ import { S3Adapter } from "../infrastructure/s3/S3Adapter.js";
 
 const PORT = process.env.PORT || 3000;
 
+// ----------------------
+// Swagger (mount early)
+// ----------------------
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 async function startServer() {
     try {
         console.log("Starting S3 microservice...");
 
-        const s3Client = new S3Client({});
+        const s3Client = new S3Client({
+            region: process.env.AWS_REGION || "eu-west-1",
+        });
+
         const adapter = new S3Adapter(s3Client);
 
         const bucket = process.env.S3_BUCKET;
@@ -24,19 +32,18 @@ async function startServer() {
         }
 
         // ----------------------
-        // Swagger
-        // ----------------------
-        app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
         // Health check
-        try{
+        // ----------------------
+        try {
             await adapter.checkBucketAccess();
-        }catch (error){
-            console.error(error);
+            console.log(`✅ S3 bucket "${bucket}" is accessible`);
+        } catch (error) {
+            console.error("❌ S3 bucket not accessible:", error);
         }
 
-        console.log(`✅ S3 bucket "${bucket}" is accessible`);
-
+        // ----------------------
+        // Start server
+        // ----------------------
         app.listen(PORT, () => {
             console.log(`🚀 Server running on port ${PORT}`);
             console.log(`📚 Swagger: http://localhost:${PORT}/docs`);

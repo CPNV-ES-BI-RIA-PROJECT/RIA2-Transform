@@ -50,7 +50,7 @@ pnpm test
 # Call the API
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/conversions \
+curl -X POST http://localhost:3002/api/v1/conversions \
   -H "Content-Type: application/json" \
   -d '{
     "url": "https://bi1-nicolas.s3.eu-west-1.amazonaws.com/multiple-events.ics"

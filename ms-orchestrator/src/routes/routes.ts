@@ -4,7 +4,7 @@
 import type { TsoaRoute } from '@tsoa/runtime';
 import {  fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { IcsConversionController } from './../presentation/controllers/IcsConversionController.js';
+import { TransformController } from './../presentation/controllers/JobsController.js';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
 
 
@@ -12,41 +12,15 @@ import type { Request as ExRequest, Response as ExResponse, RequestHandler, Rout
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "IcsDateTime": {
+    "TransformResponse": {
         "dataType": "refObject",
         "properties": {
-            "value": {"dataType":"string","required":true},
-            "timezone": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "url": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IcsEvent": {
-        "dataType": "refObject",
-        "properties": {
-            "uid": {"dataType":"string","required":true},
-            "dtstamp": {"dataType":"string","required":true},
-            "start": {"ref":"IcsDateTime","required":true},
-            "end": {"ref":"IcsDateTime","required":true},
-            "summary": {"dataType":"string"},
-            "description": {"dataType":"string"},
-            "categories": {"dataType":"array","array":{"dataType":"string"},"required":true},
-            "organizer": {"dataType":"string"},
-            "attendees": {"dataType":"array","array":{"dataType":"string"},"required":true},
-            "location": {"dataType":"string"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ConvertIcsResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "events": {"dataType":"array","array":{"dataType":"refObject","ref":"IcsEvent"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ConvertIcsRequest": {
+    "TransformRequest": {
         "dataType": "refObject",
         "properties": {
             "url": {"dataType":"string","required":true},
@@ -71,25 +45,25 @@ export function RegisterRoutes(app: Router) {
 
 
     
-        const argsIcsConversionController_createConversion: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"ref":"ConvertIcsRequest"},
+        const argsTransformController_createTransform: Record<string, TsoaRoute.ParameterSchema> = {
+                body: {"in":"body","name":"body","required":true,"ref":"TransformRequest"},
         };
-        app.post('/api/v1/conversions',
-            ...(fetchMiddlewares<RequestHandler>(IcsConversionController)),
-            ...(fetchMiddlewares<RequestHandler>(IcsConversionController.prototype.createConversion)),
+        app.post('/api/v1/transforms',
+            ...(fetchMiddlewares<RequestHandler>(TransformController)),
+            ...(fetchMiddlewares<RequestHandler>(TransformController.prototype.createTransform)),
 
-            async function IcsConversionController_createConversion(request: ExRequest, response: ExResponse, next: any) {
+            async function TransformController_createTransform(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsIcsConversionController_createConversion, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsTransformController_createTransform, request, response });
 
-                const controller = new IcsConversionController();
+                const controller = new TransformController();
 
               await templateService.apiHandler({
-                methodName: 'createConversion',
+                methodName: 'createTransform',
                 controller,
                 response,
                 next,

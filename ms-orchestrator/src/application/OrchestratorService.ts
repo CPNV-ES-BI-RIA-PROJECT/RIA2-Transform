@@ -8,9 +8,9 @@ export class OrchestratorService {
         private bucketClient: BucketAdapterClient
     ) {}
 
-    async convertAndPublish(icsUrl: string): Promise<{ url: string }> {
+    async convertAndPublish(url: string): Promise<{ url: string }> {
         // Convert ICS to JSON
-        const events = await this.icsService.convertFromUrl(icsUrl);
+        const events = await this.icsService.convertFromUrl(url);
 
         // Generate file name
         const fileName = `ics-${Date.now()}.json`;
@@ -18,8 +18,8 @@ export class OrchestratorService {
 
         // Upload and publish
         await this.bucketClient.upload(fileName, content);
-        const url = await this.bucketClient.publish(fileName);
+        const presignedUrl = await this.bucketClient.publish(fileName);
 
-        return { url };
+        return { url: presignedUrl };
     }
 }

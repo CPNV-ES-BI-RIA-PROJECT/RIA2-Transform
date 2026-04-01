@@ -7,89 +7,19 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"IcsDateTime": {
+			"TransformResponse": {
 				"properties": {
-					"value": {
-						"type": "string"
-					},
-					"timezone": {
-						"type": "string",
-						"nullable": true
-					}
-				},
-				"required": [
-					"value",
-					"timezone"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IcsEvent": {
-				"properties": {
-					"uid": {
-						"type": "string"
-					},
-					"dtstamp": {
-						"type": "string"
-					},
-					"start": {
-						"$ref": "#/components/schemas/IcsDateTime"
-					},
-					"end": {
-						"$ref": "#/components/schemas/IcsDateTime"
-					},
-					"summary": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"categories": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"organizer": {
-						"type": "string"
-					},
-					"attendees": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"location": {
+					"url": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"uid",
-					"dtstamp",
-					"start",
-					"end",
-					"categories",
-					"attendees"
+					"url"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ConvertIcsResponse": {
-				"properties": {
-					"events": {
-						"items": {
-							"$ref": "#/components/schemas/IcsEvent"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"events"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ConvertIcsRequest": {
+			"TransformRequest": {
 				"properties": {
 					"url": {
 						"type": "string"
@@ -111,16 +41,16 @@
 		"contact": {}
 	},
 	"paths": {
-		"/v1/conversions": {
+		"/v1/transforms": {
 			"post": {
-				"operationId": "CreateConversion",
+				"operationId": "CreateTransform",
 				"responses": {
 					"201": {
 						"description": "Created",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ConvertIcsResponse"
+									"$ref": "#/components/schemas/TransformResponse"
 								}
 							}
 						}
@@ -133,7 +63,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ConvertIcsRequest"
+								"$ref": "#/components/schemas/TransformRequest"
 							}
 						}
 					}

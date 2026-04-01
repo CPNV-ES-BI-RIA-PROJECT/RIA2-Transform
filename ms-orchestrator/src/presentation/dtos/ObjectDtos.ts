@@ -1,9 +1,9 @@
 import {IcsEvent} from "../../domain/types.js";
 
-export interface ConvertIcsRequest {
+export interface TransformRequest {
     url: string;
 }
 
-export interface ConvertIcsResponse {
-    events: IcsEvent[];
+export interface TransformResponse {
+    url: string;
 }

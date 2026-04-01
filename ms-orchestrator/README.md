@@ -59,10 +59,10 @@ pnpm test
 # Call the API
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/conversions \
+curl -X POST http://localhost:3000/api/v1/transforms \
   -H "Content-Type: application/json" \
   -d '{
-    "url": "https://bi1-nicolas.s3.eu-west-1.amazonaws.com/multiple-events.ics"
+    "url": "https://bi1-nicolas.s3.eu-west-1.amazonaws.com/multi-events.ics"
   }'
 ```
 
@@ -75,7 +75,9 @@ How to run the tests?
 
 ### On stage environment
 
-How to deploy the application outside the dev environment.
+```bash
+
+```
 
 ## Directory structure
 

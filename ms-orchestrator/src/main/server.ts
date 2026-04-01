@@ -4,23 +4,25 @@ import app from "./app.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger/swagger.json" with { type: "json" };
 
-import { OrchestratorService } from "../application/IcsService.js";
+import { OrchestratorService } from "../application/OrchestratorService.js";
+import { IcsService } from "../application/IcsService.js";
+import { BucketAdapterClient } from "../infrastructure/clients/BucketAdapterClient.js";
 
 const PORT = process.env.PORT || 3000;
 
 async function startServer() {
     try {
-        console.log("Starting ICS microservice...");
+        console.log("Starting ICS Orchestrator microservice...");
 
         // ----------------------
         // Services
         // ----------------------
-        const icsService = new OrchestratorService();
+        const icsService = new IcsService();
+        const bucketClient = new BucketAdapterClient();
+        const orchestrator = new OrchestratorService(icsService, bucketClient);
 
-        // make service available (optional, for advanced use)
-        app.locals.services = {
-            icsService,
-        };
+        // make services available globally if needed
+        app.locals.services = { orchestrator, icsService, bucketClient };
 
         // ----------------------
         // Swagger
@@ -48,12 +50,12 @@ async function startServer() {
         // Start server
         // ----------------------
         app.listen(PORT, () => {
-            console.log(`🚀 Server running on port ${PORT}`);
-            console.log(`📚 Swagger: http://localhost:${PORT}/docs`);
+            console.log(`Server running on port ${PORT}`);
+            console.log(`Swagger docs available at http://localhost:${PORT}/docs`);
         });
 
     } catch (error) {
-        console.error("❌ Failed to start server:", error);
+        console.error("Failed to start server:", error);
         process.exit(1);
     }
 }

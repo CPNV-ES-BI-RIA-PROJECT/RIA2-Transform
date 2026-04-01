@@ -30,7 +30,7 @@ describe('ICS Parser Service', () => {
         let expectedJson: IcsEvent[];
 
         beforeAll(() => {
-            sampleIcs = loadIcs('multiEvents.ics');
+            sampleIcs = loadIcs('multi-events.ics');
             expectedJson = loadJson('expectedMultiEvents.json');
         });
 

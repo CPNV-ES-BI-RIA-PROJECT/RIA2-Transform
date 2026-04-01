@@ -1,3 +1,4 @@
+BEGIN:VCALENDAR
 BEGIN:VEVENT
 UID:john-20250303@mycompany.com
 DTSTAMP:20250201T080000Z
@@ -10,3 +11,4 @@ ORGANIZER:MAILTO:contact@acme.ch
 ATTENDEE:MAILTO:john.doe@mycompany.com
 LOCATION:https://maps.google.com/?q=46.2044,6.1432
 END:VEVENT
+END:VCALENDAR

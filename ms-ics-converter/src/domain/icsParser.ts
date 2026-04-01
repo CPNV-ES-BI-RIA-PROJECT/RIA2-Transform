@@ -7,7 +7,7 @@ export function parseIcs(icsString: string): IcsEvent[] {
     const lines = icsString
         .split('\n')
         .map(l => l.trim())
-        .filter(l => l && !l.startsWith('BEGIN'));
+        .filter(l => l && l !== 'BEGIN:VCALENDAR' && l !== 'END:VCALENDAR');
 
     const events: IcsEvent[] = [];
     let current: Partial<IcsEvent> & {
@@ -38,13 +38,13 @@ export function parseIcs(icsString: string): IcsEvent[] {
                 break;
             case 'DTSTART':
                 current.start = {
-                    value: formatDate(value),  // ✅ use the line value directly
+                    value: formatDate(value),
                     timezone: paramObj.TZID || null
                 };
                 break;
             case 'DTEND':
                 current.end = {
-                    value: formatDate(value),  // ✅ use the line value directly
+                    value: formatDate(value),
                     timezone: paramObj.TZID || null
                 };
                 break;
@@ -72,7 +72,6 @@ export function parseIcs(icsString: string): IcsEvent[] {
                 break;
         }
 
-        // ✅ capture event when END:VEVENT
         if (line === 'END:VEVENT') {
             if (current.uid) {
                 events.push({

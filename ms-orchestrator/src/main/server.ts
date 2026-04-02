@@ -4,24 +4,28 @@ import app from "./app.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger/swagger.json" with { type: "json" };
 
-import { OrchestratorService } from "../application/OrchestratorService.js";
+// Existing services
 import { IcsService } from "../application/IcsService.js";
 import { BucketAdapterClient } from "../infrastructure/clients/BucketAdapterClient.js";
+
+// MQTT-enabled orchestrator
+import { OrchestratorWithMqtt } from "../application/OrchestratorWithMqtt.js";
 
 const PORT = process.env.PORT || 3000;
 
 async function startServer() {
     try {
-        console.log("Starting ICS Orchestrator microservice...");
+        console.log("Starting Orchestrator microservice...");
 
         // ----------------------
         // Services
         // ----------------------
         const icsService = new IcsService();
         const bucketClient = new BucketAdapterClient();
-        const orchestrator = new OrchestratorService(icsService, bucketClient);
+        // Use MQTT-enabled orchestrator
+        const orchestrator = new OrchestratorWithMqtt(icsService, bucketClient);
 
-        // make services available globally if needed
+        // make services available globally if needed (for controllers)
         app.locals.services = { orchestrator, icsService, bucketClient };
 
         // ----------------------
@@ -49,10 +53,25 @@ async function startServer() {
         // ----------------------
         // Start server
         // ----------------------
-        app.listen(PORT, () => {
+        const server = app.listen(PORT, () => {
             console.log(`Server running on port ${PORT}`);
             console.log(`Swagger docs available at http://localhost:${PORT}/docs`);
         });
+
+        // ----------------------
+        // Graceful shutdown
+        // ----------------------
+        const shutdown = async () => {
+            console.log("Shutting down Orchestrator...");
+            await orchestrator.shutdown(); // stops MQTT client if running
+            server.close(() => {
+                console.log("HTTP server closed.");
+                process.exit(0);
+            });
+        };
+
+        process.on("SIGINT", shutdown);
+        process.on("SIGTERM", shutdown);
 
     } catch (error) {
         console.error("Failed to start server:", error);

@@ -1,0 +1,40 @@
+services:
+  transform-ics-converter:
+    build:
+      context: ./ms-ics-converter
+    container_name: transform-ics-converter
+    env_file:
+      - ./ms-ics-converter/.env
+      - ./.env
+    ports:
+      - "${ICS_CONVERTER_PORT:-3002}:${ICS_CONVERTER_PORT:-3002}"
+    networks:
+      - orchestrator-net
+
+  transform-bucket-adapter:
+    build:
+      context: ./ms-bucket-adapter
+    container_name: transform-bucket-adapter
+    env_file:
+      - ./ms-bucket-adapter/.env
+      - ./.env
+    ports:
+      - "${BUCKET_ADAPTER_PORT:-3001}:${BUCKET_ADAPTER_PORT:-3001}"
+    networks:
+      - orchestrator-net
+
+  transform-orchestrator:
+    build:
+      context: ./ms-orchestrator
+    container_name: transform-orchestrator
+    env_file:
+      - ./ms-orchestrator/.env
+      - ./.env
+    ports:
+      - "${ORCHESTRATOR_PORT:-3000}:${ORCHESTRATOR_PORT:-3000}"
+    networks:
+      - orchestrator-net
+
+networks:
+  orchestrator-net:
+    driver: bridge

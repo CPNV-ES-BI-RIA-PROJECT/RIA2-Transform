@@ -36,21 +36,21 @@ async function startServer() {
         // ----------------------
         try {
             await adapter.checkBucketAccess();
-            console.log(`✅ S3 bucket "${bucket}" is accessible`);
+            console.log(`S3 bucket "${bucket}" is accessible`);
         } catch (error) {
-            console.error("❌ S3 bucket not accessible:", error);
+            console.error("S3 bucket not accessible:", error);
         }
 
         // ----------------------
         // Start server
         // ----------------------
         app.listen(PORT, () => {
-            console.log(`🚀 Server running on port ${PORT}`);
-            console.log(`📚 Swagger: http://localhost:${PORT}/docs`);
+            console.log(`Server running on port ${PORT}`);
+            console.log(`Swagger: http://localhost:${PORT}/docs`);
         });
 
     } catch (error) {
-        console.error("❌ Failed to start server:", error);
+        console.error("Failed to start server:", error);
         process.exit(1);
     }
 }

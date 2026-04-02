@@ -19,7 +19,7 @@ automation.
 * Copy and rename the sample.env
 
 ```bash
-cp sample.env .env
+cp .env.example .env
 ```
 
 * Update the variables values as needed

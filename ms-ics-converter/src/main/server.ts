@@ -48,12 +48,12 @@ async function startServer() {
         // Start server
         // ----------------------
         app.listen(PORT, () => {
-            console.log(`🚀 Server running on port ${PORT}`);
-            console.log(`📚 Swagger: http://localhost:${PORT}/docs`);
+            console.log(`Server running on port ${PORT}`);
+            console.log(`Swagger: http://localhost:${PORT}/docs`);
         });
 
     } catch (error) {
-        console.error("❌ Failed to start server:", error);
+        console.error("Failed to start server:", error);
         process.exit(1);
     }
 }

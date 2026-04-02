@@ -18,7 +18,7 @@ NPM
 * Set the environnement variables
 
 ```bash
-cp sample.env .env
+cp .env.example .env
 ```
 
 # Call the API

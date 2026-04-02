@@ -1,0 +1,19 @@
+# docker-compose.dev.yml (for dev only)
+
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:2.0
+    container_name: mqtt-broker
+    ports:
+      - "1883:1883"   # MQTT port
+      - "9001:9001"   # WebSocket (optional)
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    networks:
+      - orchestrator-net
+
+networks:
+  orchestrator-net:
+    driver: bridge

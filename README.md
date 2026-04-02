@@ -27,7 +27,13 @@ This project provides a microservice-based solution for processing calendar ICS 
 
 ### On stage environment
 
-//TODO need docker compose settings
+* Run docker compose with MQTT for testing
+
+```
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+```
+
+* Debug 
 
 ## Directory structure
 
